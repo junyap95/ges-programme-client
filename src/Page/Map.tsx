@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import Marker from "../Components/Marker";
 import PopupCard from "../Components/PopupCard";
-import styled from "styled-components";
-import { MapWrapper } from "../StyledComponents/styledComponents";
 
 const tiles = [
-  { week: "WEEK 1", x: 3, y: 2, loc: "LISBURN" },
-  { week: "WEEK 2", x: 2, y: 4, loc: "DRUMBO" },
-  { week: "WEEK 3", x: 5, y: 6, loc: "DUNDONALD" },
+  { week: "WEEK 1", x: -50, y: 200, loc: "LISBURN" },
+  { week: "WEEK 2", x: -300, y: -200, loc: "DRUMBO" },
+  { week: "WEEK 3", x: 20, y: -60, loc: "DUNDONALD" },
 ];
 
 export default function Map() {
@@ -27,6 +25,7 @@ export default function Map() {
   };
 
   useEffect(() => {
+    resizeHandler();
     window.addEventListener("resize", resizeHandler);
     return () => {
       window.removeEventListener("resize", resizeHandler);
@@ -43,41 +42,39 @@ export default function Map() {
   console.log("width", width, "height", height);
 
   return (
-    <>
-      <MapWrapper>
+    <div style={{ width: "100vw", height: "100vh", zIndex: 0 }}>
+      {width > 0 &&
+        height > 0 &&
+        tiles.map((tile, index) => (
+          <Marker
+            coordinate={{ x: width / 2 + tile.x, y: height / 2 + tile.y }}
+            tileData={tile}
+            clickHandler={(e) => onMarkerClick(e)}
+            key={index}
+          />
+        ))}
+      <div
+        onLoad={resizeHandler}
+        style={{
+          position: "relative",
+          height: "inherit",
+          zIndex: -4,
+        }}
+      >
         <img
-          src="https://ik.imagekit.io/jbyap95/Lisburn_and_Castlereagh_Lisburn_North_highlight.svg.png?updatedAt=1729081265923"
-          alt="map-of-lisburn"
-          onLoad={resizeHandler}
-          style={{ width: "100%", height: "100%", display: "block" }}
           ref={mapRef}
+          src="https://ik.imagekit.io/jbyap95/highlighted-map.png"
+          alt="lisburn-map"
+          style={{ objectFit: "contain", width: "100%", height: "100%" }}
         />
-        {width > 0 &&
-          height > 0 &&
-          tiles.map((tile, index) => (
-            <Marker
-              coordinate={{ x: (width * tile.x) / 10, y: (height * tile.y) / 10 }}
-              tileData={tile}
-              clickHandler={(e) => onMarkerClick(e)}
-              key={index}
-            />
-          ))}
-        {popup && (
-          <>
-            <Backdrop />
-            <PopupCard title={currentLoc} clickHandler={() => setPopup(false)} />
-          </>
-        )}
-      </MapWrapper>
-    </>
+      </div>
+
+      {popup && (
+        <div className="popContainer">
+          <PopupCard title={currentLoc} clickHandler={() => setPopup(false)} />
+          <div className="backdrop" />
+        </div>
+      )}
+    </div>
   );
 }
-const Backdrop = styled.div`
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(1rem);
-  z-index: 5;
-  pointer-events: none;
-`;

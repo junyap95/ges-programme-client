@@ -50,31 +50,33 @@ export default function AvatarPopup({
   };
 
   return (
-    <AvatarPopupWrapper>
-      <Header1>{title}</Header1>
-      <div style={{ width: "100%" }}>
-        <Slider {...settings} afterChange={handleChange} centerMode={true}>
-          {avatars.map((avatar, index) => (
-            <>
-              <div className="test">
-                <img
-                  id={avatar.samName}
-                  src={avatar.url}
-                  alt="sam-logo"
-                  ref={(el) => (imgRefs.current[index] = el)}
-                />
-              </div>
-            </>
-          ))}
-        </Slider>
-      </div>
+    <PopupContainer>
+      <AvatarPopupWrapper>
+        <Header1>{title}</Header1>
+        <div style={{ width: "100%" }}>
+          <Slider {...settings} afterChange={handleChange} centerMode={true}>
+            {avatars.map((avatar, index) => (
+              <>
+                <div className="test">
+                  <img
+                    id={avatar.samName}
+                    src={avatar.url}
+                    alt="sam-logo"
+                    ref={(el) => (imgRefs.current[index] = el)}
+                  />
+                </div>
+              </>
+            ))}
+          </Slider>
+        </div>
 
-      <PopupButton>{imgRefs.current[currentIndex]?.id}</PopupButton>
+        <PopupButton>{imgRefs.current[currentIndex]?.id}</PopupButton>
 
-      <CloseButton onClick={clickHandler}>
-        <X size={"2em"} strokeWidth={4} color="#f5f5f5" />
-      </CloseButton>
-    </AvatarPopupWrapper>
+        <CloseButton onClick={clickHandler}>
+          <X size={"2em"} strokeWidth={4} color="#f5f5f5" />
+        </CloseButton>
+      </AvatarPopupWrapper>
+    </PopupContainer>
   );
 }
 
@@ -94,18 +96,40 @@ const AvatarPopupWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  border: 2px solid #000;
+  border: 1px solid #333333;
   border-radius: 1em;
   width: 30rem;
   height: 30rem;
   padding: 1em;
-  box-shadow: 0px 8px 0px 0px #333333;
+  position: relative;
   background-color: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  position: fixed;
-  margin: auto;
-  inset: 0;
-  z-index: 10;
+  top: 700%;
+  left: -50%;
+
   user-select: none;
   animation: ${flipIn} 0.25s ease-out;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(from var(--angle), #f58439, #3380fc, #f58439);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0.5em;
+    border-radius: 1.5em;
+    animation: 8s spin linear infinite;
+    z-index: -1;
+  }
+`;
+
+const PopupContainer = styled.div`
+  position: fixed;
+  top: 80%;
+  left: 50%;
+  transform: translate(0%, -100%);
+  z-index: 10;
 `;

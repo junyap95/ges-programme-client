@@ -39,7 +39,7 @@ const Login: React.FC = () => {
     // On successful login, redirect to another page
     if (loginRes.operation) {
       setLoginError(false);
-      navigate("/map");
+      navigate("/game-map");
     } else {
       setLoginError(true);
     }

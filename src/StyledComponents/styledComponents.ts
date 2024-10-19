@@ -1,12 +1,15 @@
 import styled from "styled-components";
 
+// background-color: #f5a039;
 export const MarkerWrapper = styled.button`
-  background-color: #f5a039;
+  background-color: #3380fc;
+  color: #f5f5f5;
   position: absolute;
   font-weight: 600;
   font-size: 0.8em;
-  transform: "translate(-50%, -50%)";
-  padding: 0.5em;
+
+  padding: 1em 0.5em;
+  transition: transform 0.2s ease-in-out;
 
   border: 2px solid #333333;
   border-radius: 1em;
@@ -14,8 +17,8 @@ export const MarkerWrapper = styled.button`
   drop-shadow: 0 2rem 0 #333333;
 
   &:hover {
-    background-color: #f58439;
     cursor: pointer;
+    transform: scale(1.2);
   }
 
   &:active {
@@ -52,8 +55,9 @@ export const PopupButton = styled.button`
 `;
 
 export const CloseButton = styled.button`
-  position: fixed;
-  top: 105%;
+  position: absolute;
+  top: 100%;
+  width: 50%;
   background-color: #f5394c;
   padding: 0.5rem;
   border: 2px solid #333333;
@@ -90,7 +94,6 @@ export const GameContainer = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100vh;
-
   border: 1px solid #333333;
 `;
 
@@ -103,9 +106,17 @@ export const NavBar = styled.nav`
   color: #333333;
   align-items: center;
   width: 100%;
-
   height: 5rem;
+  border: 1px solid red;
+  z-index: 5;
 `;
+
+export const MapWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+`;
+
 export const FootBar = styled.nav`
   position: fixed;
   display: flex;
@@ -115,7 +126,6 @@ export const FootBar = styled.nav`
   width: 100%;
   border: 1px solid red;
   padding: 1em;
-
   bottom: 0;
   margin: 0;
 `;
@@ -141,9 +151,4 @@ export const AvatarImage = styled.img`
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
-`;
-
-export const MapWrapper = styled.div`
-  height: 100%;
-  position: relative;
 `;

@@ -9,7 +9,7 @@ type MarkerProps = {
 export default function Marker({ coordinate, tileData, clickHandler }: MarkerProps) {
   return (
     <MarkerWrapper
-      style={{ left: `${coordinate.x}px`, top: `${coordinate.y}px` }}
+      style={{ left: `${coordinate.x}px`, top: `${coordinate.y}px`, zIndex: -3 }}
       onClick={clickHandler}
       data-week={tileData.week}
       data-loc={tileData.loc}

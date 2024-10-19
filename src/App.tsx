@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "./Page/Login";
+import "./App.css";
 
 import MapContainer from "./Page/MapContainer";
 import TesterMap from "./Page/TesterMap";

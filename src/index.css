@@ -44,6 +44,8 @@ body {
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  touch-action: none;
 }
 
 code {
@@ -52,7 +54,6 @@ code {
 
 .test {
   display: flex !important;
-
   justify-content: center !important;
 }
 

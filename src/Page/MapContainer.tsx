@@ -25,12 +25,11 @@ export default function MapContainer() {
   return (
     <GameContainer>
       <NavBar>
-        <div style={{ height: "100%" }}>
+        <div style={{ height: "150%" }}>
           <img
             src="https://ik.imagekit.io/jbyap95/studyseed-logo-stroke.png?updatedAt=1729092924066"
             alt="studyseed-logo"
-            // width={"100%"}
-            height={"150%"}
+            height={"100%"}
           />
         </div>
         <NavElement>
@@ -41,9 +40,9 @@ export default function MapContainer() {
               alt="user-avatar"
             />
           </AvatarContainer>
+          {avatarPopup && <AvatarPopup title="Pick An Avatar" clickHandler={handleAvatar} />}
         </NavElement>
       </NavBar>
-      {avatarPopup && <AvatarPopup title="Pick An Avatar" clickHandler={handleAvatar} />}
 
       <Map />
 
