@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../clientConstants";
 
-export const login = async (userid: any, URL: any) => {
+const login = async (userid: any, URL: any) => {
   try {
     const params = { userid: userid };
     const response = await fetch(`http://localhost:3001/auth/login`, {
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
     // On successful login, redirect to another page
     if (loginRes.operation) {
       setLoginError(false);
-      navigate("/game-map");
+      navigate("/game-map", { state: { result: loginRes.result } });
     } else {
       setLoginError(true);
     }

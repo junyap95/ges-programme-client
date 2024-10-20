@@ -34,13 +34,12 @@ const settings = {
   prevArrow: <ChevronLeft size={"2em"} strokeWidth={4} color="#3380fc" />,
 };
 
-export default function AvatarPopup({
-  title,
-  clickHandler,
-}: {
+type AvatarPopUpProps = {
   title: string;
   clickHandler: () => void;
-}) {
+};
+
+export default function AvatarPopup({ title, clickHandler }: AvatarPopUpProps) {
   const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -96,7 +95,6 @@ const AvatarPopupWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  border: 1px solid #333333;
   border-radius: 1em;
   width: 30rem;
   height: 30rem;
@@ -105,11 +103,9 @@ const AvatarPopupWrapper = styled.div`
   background-color: rgba(255, 255, 255, 0.7);
   top: 700%;
   left: -50%;
-
   user-select: none;
   animation: ${flipIn} 0.25s ease-out;
 
-  &::before,
   &::after {
     content: "";
     position: absolute;
@@ -121,7 +117,8 @@ const AvatarPopupWrapper = styled.div`
     transform: translate(-50%, -50%);
     padding: 0.5em;
     border-radius: 1.5em;
-    animation: 8s spin linear infinite;
+    animation: 5s spin linear infinite;
+    box-shadow: 0 0.5em 0 0 #333333;
     z-index: -1;
   }
 `;

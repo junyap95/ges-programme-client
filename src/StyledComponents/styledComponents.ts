@@ -1,4 +1,16 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const pulse = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
 
 // background-color: #f5a039;
 export const MarkerWrapper = styled.button`
@@ -6,15 +18,13 @@ export const MarkerWrapper = styled.button`
   color: #f5f5f5;
   position: absolute;
   font-weight: 600;
-  font-size: 0.8em;
-
+  transform-origin: center;
   padding: 1em 0.5em;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease;
 
   border: 2px solid #333333;
-  border-radius: 1em;
+  border-radius: 0.3em;
   box-shadow: 0 0.4em 0 0 #333333;
-  drop-shadow: 0 2rem 0 #333333;
 
   &:hover {
     cursor: pointer;
@@ -26,6 +36,10 @@ export const MarkerWrapper = styled.button`
     cursor: pointer;
     box-shadow: 0px 3px 0px 0px #333333;
     transform: translateY(2px);
+  }
+
+  &.active {
+    animation: ${pulse} 2s infinite;
   }
 `;
 
@@ -107,15 +121,15 @@ export const NavBar = styled.nav`
   align-items: center;
   width: 100%;
   height: 5rem;
-  border: 1px solid red;
-  z-index: 5;
+  border: 0px solid red;
+  z-index: 3;
 `;
 
-export const MapWrapper = styled.div`
-  height: 100%;
-  width: 100%;
-  z-index: 0;
-`;
+// export const MapWrapper = styled.div`
+//   height: 100%;
+//   width: 100%;
+//   z-index: 4;
+// `;
 
 export const FootBar = styled.nav`
   position: fixed;
@@ -124,10 +138,11 @@ export const FootBar = styled.nav`
   color: #333333;
   align-items: center;
   width: 100%;
-  border: 1px solid red;
+  border: 0px solid red;
   padding: 1em;
   bottom: 0;
   margin: 0;
+  z-index: 3;
 `;
 
 export const NavElement = styled.div`
@@ -150,5 +165,6 @@ export const AvatarImage = styled.img`
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+
   cursor: pointer;
 `;
