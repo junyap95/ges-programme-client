@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Marker from "../Components/Marker";
 import PopupCard from "../Components/PopupCard";
 import { relative } from "path";
+import { set } from "lodash";
 
 type GameData = {
   [key: string]: {
@@ -30,10 +31,9 @@ export default function Map({ gameData }: { gameData: GameData }) {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [popup, setPopup] = useState(false);
-  const [currentLoc, setCurrentLoc] = useState("");
+  const [locAndWeek, setLocAndWeek] = useState({ loc: "", week: "" });
 
   const resizeHandler = () => {
-    console.log("mapref", mapRef.current);
     if (mapRef.current) {
       const dimensions = mapRef.current.getBoundingClientRect();
       setWidth(dimensions.width);
@@ -52,10 +52,8 @@ export default function Map({ gameData }: { gameData: GameData }) {
   const onMarkerClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setPopup(!popup);
     const target = e.target as HTMLButtonElement;
-    setCurrentLoc(target.dataset.loc || "unknown");
+    setLocAndWeek({ loc: target.dataset.loc || "unknown", week: target.dataset.week || "unknown" });
   };
-
-  console.log("width", width, "height", height);
 
   return (
     <div
@@ -111,7 +109,7 @@ export default function Map({ gameData }: { gameData: GameData }) {
 
       {popup && (
         <div className="popContainer">
-          <PopupCard title={currentLoc} clickHandler={() => setPopup(false)} />
+          <PopupCard locAndWeekData={locAndWeek} onClose={() => setPopup(false)} />
           <div className="backdrop" />
         </div>
       )}

@@ -108,7 +108,6 @@ export const GameContainer = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100vh;
-  border: 1px solid #333333;
 `;
 
 export const NavBar = styled.nav`

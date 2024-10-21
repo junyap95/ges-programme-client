@@ -8,17 +8,29 @@ type MarkerProps = {
   clickHandler: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
+function isWithinOneWeek(startDateStr: Date) {
+  // Parse the dates
+  const today = new Date();
+  // Calculate the end date (one week after the start date)
+  const endDate = new Date(startDateStr);
+  endDate.setDate(startDateStr.getDate() + 6); // Add 7 days to the start date
+
+  // Check if the check date is within the range
+  return today >= startDateStr && today <= endDate;
+}
+
 export default function Marker({ activeDate, coordinate, tileData, clickHandler }: MarkerProps) {
   // TODO: Construction Complete state
   const activeDateObj = new Date(activeDate);
   const today = new Date();
   const isActive = today >= activeDateObj;
-  const isToday = today.toDateString() === activeDateObj.toDateString();
+  const isWithinOneWeekRange = isWithinOneWeek(activeDateObj);
+
   const currentWeek = startCase(tileData.week).toUpperCase();
   return (
     <MarkerWrapper
       title={tileData.loc}
-      className={isToday ? "active" : ""}
+      className={isWithinOneWeekRange ? "active" : ""}
       style={{
         left: `${coordinate.x}px`,
         top: `${coordinate.y}px`,

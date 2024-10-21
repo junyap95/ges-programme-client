@@ -55,16 +55,14 @@ export default function AvatarPopup({ title, clickHandler }: AvatarPopUpProps) {
         <div style={{ width: "100%" }}>
           <Slider {...settings} afterChange={handleChange} centerMode={true}>
             {avatars.map((avatar, index) => (
-              <>
-                <div className="test">
-                  <img
-                    id={avatar.samName}
-                    src={avatar.url}
-                    alt="sam-logo"
-                    ref={(el) => (imgRefs.current[index] = el)}
-                  />
-                </div>
-              </>
+              <div className="test" key={index}>
+                <img
+                  id={avatar.samName}
+                  src={avatar.url}
+                  alt="sam-logo"
+                  ref={(el) => (imgRefs.current[index] = el)}
+                />
+              </div>
             ))}
           </Slider>
         </div>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   AvatarContainer,
   AvatarImage,
@@ -10,20 +10,16 @@ import {
 import Map from "./Map";
 import { Trophy } from "lucide-react";
 import AvatarPopup from "../Components/AvatarPopUp";
-import { useLocation } from "react-router-dom";
 import { fetchGameData } from "../clientConstants";
+import { AuthContext } from "../Context/AuthContext";
 
 export default function MapContainer() {
-  const { state } = useLocation(); // user profile data is passed from the Login page
-  const { result } = state;
-  // should not pass user data here, instead fetch it from the server
-
-  const [avatar, setAvatar] = useState(result.avatar);
+  const context = useContext(AuthContext);
   const [avatarPopup, setAvatarPopup] = useState(false);
   const [gameData, setGameData] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const handleAvatar = useCallback(() => {
+  const handleAvatarPopup = useCallback(() => {
     setAvatarPopup(!avatarPopup);
   }, [avatarPopup]);
 
@@ -40,10 +36,8 @@ export default function MapContainer() {
       }
     };
     fetchData();
-  }, [result.avatar]);
+  }, []);
 
-  console.log("c avatr", avatar);
-  console.log("c gameData", gameData);
   if (loading) return <div>Loading...</div>;
   return (
     <GameContainer>
@@ -60,17 +54,20 @@ export default function MapContainer() {
         </div>
         <NavElement>
           <Trophy size={"2.5rem"} strokeWidth={"1.5px"} />
-          <AvatarContainer onClick={handleAvatar}>
-            <AvatarImage src={result && avatar} alt="user-avatar" />
+          <AvatarContainer onClick={handleAvatarPopup}>
+            <AvatarImage
+              src={context?.userProfile.avatar || "https://ik.imagekit.io/jbyap95/favicon3.png"}
+              alt="user-avatar"
+            />
           </AvatarContainer>
-          {avatarPopup && <AvatarPopup title="Pick An Avatar" clickHandler={handleAvatar} />}
+          {avatarPopup && <AvatarPopup title="Pick An Avatar" clickHandler={handleAvatarPopup} />}
         </NavElement>
       </NavBar>
 
       <Map gameData={gameData} />
 
       <FootBar>
-        <div>Star x 10</div>
+        <div>{context?.userProfile.username || "Username"}</div>
         <div>LOGOUT</div>
       </FootBar>
     </GameContainer>
