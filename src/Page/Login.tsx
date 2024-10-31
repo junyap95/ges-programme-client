@@ -4,6 +4,7 @@ import { AuthContext } from "../Context/AuthContext";
 import { MarkerWrapper } from "../StyledComponents/styledComponents";
 import styled from "styled-components";
 import { API_URL } from "../constants";
+import IntroAutoType from "../Components/AutoTyper";
 
 const login = async (userid: string) => {
   try {
@@ -28,9 +29,11 @@ export default function Login() {
   const [loginError, setLoginError] = useState(false);
   const [userid, setUserId] = useState("");
   const [btnActive, setBtnActive] = useState(false);
+  const [serverLoading, setServerLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginError(false);
+    setServerLoading(false);
     if (e.target.value.length >= 5) {
       setBtnActive(true);
     } else {
@@ -44,12 +47,14 @@ export default function Login() {
     // Login logic
     if (userid) {
       const loginRes = await login(userid);
+      setServerLoading(true);
       if (loginRes.operation) {
         setLoginError(false);
         context?.signInContext(userid); /** Setting context state */
         navigate("/game-map");
       } else {
         setLoginError(true);
+        setServerLoading(false);
       }
     }
   };
@@ -68,6 +73,8 @@ export default function Login() {
             bottom: "10%",
             pointerEvents: "none",
             userSelect: "none",
+            transition: "all 1s ease-in-out",
+            transform: serverLoading ? "translateX(-200%)" : "translateX(0)",
           }}
         />
 
@@ -82,8 +89,11 @@ export default function Login() {
             bottom: "10%",
             pointerEvents: "none",
             userSelect: "none",
+            transition: "all 1s ease-in-out",
+            transform: serverLoading ? "translateX(200%)" : "translateX(0)",
           }}
         />
+
         <div style={{ position: "absolute", top: "0", padding: "0", width: "25rem" }}>
           <img
             className="studyseed-logo"
@@ -96,34 +106,61 @@ export default function Login() {
             }}
           />
         </div>
-        <LoginForm className="login-form">
-          <form
-            onSubmit={handleLogin}
-            style={{ display: "flex", flexDirection: "column", gap: "2em" }}
-          >
-            <FillInputs
-              placeholder="Enter Your Userid"
-              type="text"
-              id="userid"
-              value={userid}
-              onChange={handleChange}
-              required
-              maxLength={10}
-              autoComplete="off"
-            />
-            <MarkerWrapper
-              type="submit"
+        {serverLoading ? (
+          <div style={{ padding: "1em" }}>
+            <img
+              className="sam-loading"
+              src="https://ik.imagekit.io/jbyap95/sam_anim03.gif?updatedAt=1729092923412"
+              alt="studyseed-sam"
               style={{
-                position: "relative",
-                backgroundColor: btnActive ? "#f58439" : "grey",
-                pointerEvents: btnActive ? "auto" : "none",
+                // margin: "0 auto",
+                // inset: "0",
+                height: "15em",
+                // position: "absolute",
               }}
-            >
-              I'M GAME!
-              {loginError && <ErrorMsg>Invalid User ID</ErrorMsg>}
-            </MarkerWrapper>
-          </form>
-        </LoginForm>
+            />
+            {serverLoading && <IntroAutoType />}
+          </div>
+        ) : (
+          <>
+            <LoginForm className="login-form">
+              <form
+                onSubmit={handleLogin}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "2em",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <FillInputs
+                  placeholder="Enter Your Userid"
+                  type="text"
+                  id="userid"
+                  value={userid}
+                  onChange={handleChange}
+                  required
+                  maxLength={10}
+                  autoComplete="off"
+                />
+
+                <MarkerWrapper
+                  type="submit"
+                  style={{
+                    position: "relative",
+                    backgroundColor: btnActive ? "#f58439" : "grey",
+                    pointerEvents: btnActive ? "auto" : "none",
+                    padding: "1em 3em",
+                  }}
+                >
+                  I'M GAME!
+                  {loginError && <ErrorMsg>Invalid User ID</ErrorMsg>}
+                </MarkerWrapper>
+              </form>
+            </LoginForm>
+          </>
+        )}
       </div>
     </div>
   );
@@ -158,6 +195,7 @@ const LoginForm = styled.div`
   width: 25rem;
   padding: 3rem;
   border: 2px solid #3380fc;
+  height: 14rem;
 
   background-color: rgba(229, 229, 229, 0.1);
   border-radius: 1rem;
