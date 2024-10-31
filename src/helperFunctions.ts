@@ -1,4 +1,4 @@
-export const API_URL = process.env.NODE_ENV === "production" ? "" : "http://localhost:3001";
+import { API_URL } from "./constants";
 
 export const fetchUserProgress = async (userid: any) => {
   try {
@@ -80,5 +80,57 @@ export const getScores = async (userid: string) => {
     }
   } catch (error) {
     console.error("Error:", error);
+  }
+};
+
+export const logWeeklyCheckin = async (userid: string, week: string, date: string) => {
+  try {
+    const response = await fetch(`${API_URL}/update/weekly-progress`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userid, week, date }),
+    });
+
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error("Error logging weekly check-in in progress table:", error);
+  }
+};
+
+export const incrementAttemptCount = async (userid: string, week: string) => {
+  try {
+    const response = await fetch(`${API_URL}/update/attempt-count`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userid, week }),
+    });
+
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error("Error incrementing attempt count:", error);
+  }
+};
+
+export const incrementUserStars = async (userid: string, amount: number) => {
+  try {
+    const response = await fetch(`${API_URL}/update/user-stars`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userid, amount }),
+    });
+
+    if (response.ok) return await response.json();
+  } catch (error) {
+    console.error("Error incrementing user stars:", error);
   }
 };

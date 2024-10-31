@@ -1,31 +1,14 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { API_URL, getScores } from "../clientConstants";
+import { getScores, incrementUserStars } from "../helperFunctions";
 import { CloseButton, Header1, PopupButton } from "../StyledComponents/styledComponents";
 import { X } from "lucide-react";
 import { AuthContext } from "../Context/AuthContext";
-import { getAttemptCount, getWeeklyLoginStatus } from "../clientConstants";
+import { getAttemptCount, getWeeklyLoginStatus } from "../helperFunctions";
+import { QUIZ_SELECTION_API_URL, SAM_COMPLETION, SAM_CONSTRUCTION } from "../constants";
 
 type PopupCardProps = {
   locAndWeekData: { week: string; loc: string };
   onClose: () => void;
-};
-
-const logWeeklyCheckin = async (userid: string, week: string, date: string) => {
-  try {
-    const response = await fetch(`${API_URL}/update/weekly-progress`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userid, week, date }),
-    });
-
-    if (response.ok) {
-      return await response.json();
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
 };
 
 export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
@@ -34,12 +17,10 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
   const userid = localStorage.getItem("userid") ?? "";
   const [userGameData, setUserGameData] = useState({ attempts: 0, progress: "", scores: 0 });
 
-  console.log("userProfile", userProfile);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const attempts = await getAttemptCount(userid);
+        const attempts = await getAttemptCount(userid); /**To be refactored */
         const progress = await getWeeklyLoginStatus(userid);
         const scores = await getScores(userid);
         setUserGameData((prevData) => ({
@@ -48,37 +29,34 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
           progress: progress[locAndWeekData.week],
           scores: scores[locAndWeekData.week],
         }));
-        console.log("marks", userGameData.scores);
       } catch (err) {
-        console.error("Error:", err);
+        console.error("Error fetching game progress in PopupCard:", err);
       }
     };
     fetchData();
   }, [locAndWeekData.week, userGameData.scores, userid]);
 
   const handleAttempt = useCallback(async () => {
-    if (!userGameData.progress) {
-      const date = new Date().toISOString().split("T")[0];
-      const res = await logWeeklyCheckin(userid, locAndWeekData.week, date);
-      console.log("res", res);
-    }
-
-    // THEN COUNT ATTEMPT
-    console.log("attemptData", userGameData.attempts);
+    // If first ever attempt, stars + 1
+    if (userGameData.attempts === 0) await incrementUserStars(userid, 1);
 
     // THEN NAVIGATE TO QUIZ
-  }, [locAndWeekData.week, userGameData.attempts, userGameData.progress, userid]);
+    const userData = { ...userProfile, userid, currentAttempt: userGameData.attempts + 1 };
+    const userDataParams = encodeURIComponent(JSON.stringify(userData));
+    window.location.href = `${QUIZ_SELECTION_API_URL}?course=ges&week=${locAndWeekData.week}&data=${userDataParams}`;
+  }, [locAndWeekData.week, userGameData.attempts, userProfile, userid]);
 
   return (
     <div className="pop">
       <Header1>{locAndWeekData.loc}</Header1>
       <img
-        src="https://ik.imagekit.io/jbyap95/tr:w-200/sam_anim03.gif?updatedAt=1729092923412"
+        src={userGameData.progress ? SAM_COMPLETION : SAM_CONSTRUCTION}
         alt="sam-logo"
         width={"100%"}
+        style={{ pointerEvents: "none" }}
       />
       <div style={{ textAlign: "center", width: "inherit", padding: "0 1em" }}>
-        {userGameData.progress && userGameData.scores >= 80 ? (
+        {userGameData.progress ? (
           <PopupButton
             style={{
               boxShadow: "none",

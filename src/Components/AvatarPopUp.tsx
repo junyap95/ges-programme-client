@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { CloseButton, Header1, PopupButton } from "../StyledComponents/styledComponents";
+import { CloseButton, Header1 } from "../StyledComponents/styledComponents";
 import { X } from "lucide-react";
 import Slider from "react-slick";
 import { ChevronRight } from "lucide-react";
@@ -51,7 +51,7 @@ export default function AvatarPopup({ title, clickHandler }: AvatarPopUpProps) {
   return (
     <PopupContainer>
       <AvatarPopupWrapper>
-        <Header1>{title}</Header1>
+        <Header1>Coming Soon!</Header1>
         <div style={{ width: "100%" }}>
           <Slider {...settings} afterChange={handleChange} centerMode={true}>
             {avatars.map((avatar, index) => (
@@ -67,7 +67,7 @@ export default function AvatarPopup({ title, clickHandler }: AvatarPopUpProps) {
           </Slider>
         </div>
 
-        <PopupButton>{imgRefs.current[currentIndex]?.id}</PopupButton>
+        {/* <PopupButton>{imgRefs.current[currentIndex]?.id}</PopupButton> */}
 
         <CloseButton onClick={clickHandler}>
           <X size={"2em"} strokeWidth={4} color="#f5f5f5" />

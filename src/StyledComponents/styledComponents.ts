@@ -20,22 +20,17 @@ export const MarkerWrapper = styled.button`
   font-weight: 600;
   transform-origin: center;
   padding: 1em 0.5em;
-  transition: transform 0.2s ease;
-
+  transition: all 0.1s ease;
+  cursor: pointer;
   border: 2px solid #333333;
   border-radius: 0.3em;
   box-shadow: 0 0.4em 0 0 #333333;
 
-  &:hover {
-    cursor: pointer;
-    transform: scale(1.2);
-  }
-
   &:active {
     background-color: #f58439;
     cursor: pointer;
-    box-shadow: 0px 3px 0px 0px #333333;
-    transform: translateY(2px);
+    box-shadow: 0px 0.2em 0px 0px #333333;
+    transform: translateY(0.2em);suuususu
   }
 
   &.active {
@@ -134,7 +129,7 @@ export const FootBar = styled.nav`
   position: fixed;
   display: flex;
   justify-content: space-between;
-  color: #333333;
+
   align-items: center;
   width: 100%;
   border: 0px solid red;
@@ -155,15 +150,57 @@ export const NavElement = styled.div`
 export const AvatarContainer = styled.div`
   height: inherit;
   border: 2px solid #333333;
-  border-radius: 50%;
+  border-radius: 1em;
   cursor: pointer;
+  overflow: hidden;
+  width: 3em;
+  box-shadow: 0px 3px 0px 0px #333333;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:active {
+    box-shadow: 0px 3px 0px 0px #333333;
+    transform: translateY(2px) scale(0.9);
+  }
 `;
 
 export const AvatarImage = styled.img`
-  width: 100%;
+  width: 200%;
   height: 100%;
-  border-radius: 50%;
   object-fit: cover;
+  position: absolute;
+  transform: translate(-3%);
+  background-color: #f5f5f5;
+`;
 
-  cursor: pointer;
+export const LogoutPopupContainer = styled.div`
+  position: fixed;
+  display: flex;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(0.3rem);
+  pointer-events: auto;
+  width: 100vw;
+  top: 0%;
+  left: 0%;
+  z-index: 4;
+`;
+
+export const Popup = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  margin: auto;
+  box-shadow: 0 0.5em 0 #333333;
+  border: 1px solid black;
+  border-radius: 1em;
+
+  background-color: rgba(255, 255, 255, 0.75);
+
+  padding: 2rem 8rem;
+  gap: 2rem;
 `;

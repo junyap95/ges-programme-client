@@ -1,30 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import Marker from "../Components/Marker";
 import PopupCard from "../Components/PopupCard";
-import { relative } from "path";
-import { set } from "lodash";
+import { tiles } from "../constants";
 
 type GameData = {
   [key: string]: {
-    activeDate: string;
-    allQuestions: {};
+    [key: string]: {
+      activeDate: string;
+      allQuestions: {};
+    };
   };
 };
-
-const tiles = [
-  { week: "week1", x: -1, y: 0, loc: "LISBURN" },
-  { week: "week2", x: 9, y: 0, loc: "DRUMBO" },
-  { week: "week3", x: 23, y: -17, loc: "DUNDONALD" },
-  { week: "week4", x: 19, y: -5, loc: "MONEYREAGH" },
-  { week: "week5", x: 18, y: 3, loc: "CARRYDUFF" },
-  { week: "week6", x: 5, y: 23, loc: "DROMARA" },
-  { week: "week7", x: -3, y: 15, loc: "HILLSBOROUGH" },
-  { week: "week8", x: -18, y: 8, loc: "MOIRA" },
-  { week: "week9", x: -10, y: 0, loc: "MAGHABERRY" },
-  { week: "week10", x: -17, y: -5, loc: "BALLINDERRY" },
-  { week: "week11", x: -6, y: -16, loc: "STONYFORD" },
-  { week: "week12", x: 3, y: -6, loc: "DERRYAGHY" },
-];
 
 export default function Map({ gameData }: { gameData: GameData }) {
   const mapRef = useRef<HTMLImageElement>(null);
@@ -32,6 +18,8 @@ export default function Map({ gameData }: { gameData: GameData }) {
   const [height, setHeight] = useState(0);
   const [popup, setPopup] = useState(false);
   const [locAndWeek, setLocAndWeek] = useState({ loc: "", week: "" });
+  const [isFlat, setIsFlat] = useState(false);
+  const [animationDone, setAnimationDone] = useState(false);
 
   const resizeHandler = () => {
     if (mapRef.current) {
@@ -42,12 +30,31 @@ export default function Map({ gameData }: { gameData: GameData }) {
   };
 
   useEffect(() => {
-    resizeHandler();
+    // resizeHandler();
     window.addEventListener("resize", resizeHandler);
     return () => {
       window.removeEventListener("resize", resizeHandler);
     };
   }, [mapRef]);
+
+  useEffect(() => {
+    // Trigger the flat animation after a delay (e.g., 1 second)
+    const timer = setTimeout(() => {
+      setIsFlat(true);
+    }, 0);
+
+    return () => clearTimeout(timer); // Cleanup the timeout on unmount
+  }, []);
+
+  useEffect(() => {
+    // Trigger the flat animation after a delay (e.g., 1 second)
+    const timer = setTimeout(() => {
+      resizeHandler();
+      setAnimationDone(true);
+    }, 1200);
+
+    return () => clearTimeout(timer); // Cleanup the timeout on unmount
+  }, []);
 
   const onMarkerClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setPopup(!popup);
@@ -64,19 +71,24 @@ export default function Map({ gameData }: { gameData: GameData }) {
       }}
     >
       <div
-        onLoad={resizeHandler}
+        // onLoad={resizeHandler}
         style={{
           height: "100%",
           zIndex: -4,
           display: "flex",
           justifyContent: "center",
-          backgroundColor: "rgba(103, 143, 201, 1)",
+          background:
+            "radial-gradient(circle, rgba(229, 229, 229, 1) 0%, rgba(103, 143, 201, 1) 70%)",
+          perspective: "500px",
         }}
       >
         <div
           style={{
             position: "relative",
             padding: "4rem",
+            transform: isFlat ? "rotateX(0deg)" : "rotateX(40deg)",
+            transition: "all 1s ease-in-out",
+            transformStyle: "preserve-3d",
           }} /** This div is needed to contain the img and the markers. Because Marker's absolute position is only affected by its parent, not siblings */
         >
           <img
@@ -90,11 +102,10 @@ export default function Map({ gameData }: { gameData: GameData }) {
               filter: "drop-shadow(0 0.7em 0 rgba(0, 0, 0, 0.1))",
             }}
           />
-          {width > 0 &&
-            height > 0 &&
+          {animationDone &&
             tiles.map((tile, index) => (
               <Marker
-                activeDate={gameData[tile.week].activeDate}
+                activeDate={gameData.num[tile.week].activeDate}
                 coordinate={{
                   x: width / 2 + (width / 50) * tile.x,
                   y: height / 2 + (height / 50) * tile.y,

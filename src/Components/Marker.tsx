@@ -1,5 +1,6 @@
 import { startCase } from "lodash";
 import { MarkerWrapper } from "../StyledComponents/styledComponents";
+import { useEffect, useState } from "react";
 
 type MarkerProps = {
   activeDate: string;
@@ -26,6 +27,12 @@ export default function Marker({ activeDate, coordinate, tileData, clickHandler 
   const isActive = today >= activeDateObj;
   const isWithinOneWeekRange = isWithinOneWeek(activeDateObj);
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   const currentWeek = startCase(tileData.week).toUpperCase();
   return (
     <MarkerWrapper
@@ -38,6 +45,7 @@ export default function Marker({ activeDate, coordinate, tileData, clickHandler 
         backgroundColor: isActive ? "#3380fc" : "grey",
         pointerEvents: isActive ? "auto" : "none",
         fontSize: isActive ? "0.75em" : "0.5rem",
+        scale: isVisible ? "1" : "0",
       }}
       onClick={clickHandler}
       data-week={tileData.week}
