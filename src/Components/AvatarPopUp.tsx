@@ -45,7 +45,7 @@ export default function AvatarPopup({ title, clickHandler }: AvatarPopUpProps) {
 
   const handleChange = (index: number) => {
     setCurrentIndex(index);
-    console.log(imgRefs.current[index]?.id);
+    console.log(imgRefs.current[index]?.id, currentIndex);
   };
 
   return (
