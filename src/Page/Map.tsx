@@ -65,8 +65,8 @@ export default function Map({ gameData }: { gameData: GameData }) {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100vh",
+        width: "100svw",
+        height: "100svh",
         zIndex: popup ? 4 : 2,
       }}
     >
@@ -77,6 +77,8 @@ export default function Map({ gameData }: { gameData: GameData }) {
           zIndex: -4,
           display: "flex",
           justifyContent: "center",
+          // position: "fixed",
+          border: "1px solid red",
           background:
             "radial-gradient(circle, rgba(229, 229, 229, 1) 0%, rgba(103, 143, 201, 1) 70%)",
           perspective: "500px",
@@ -84,6 +86,9 @@ export default function Map({ gameData }: { gameData: GameData }) {
       >
         <div
           style={{
+            // border: "1px solid green",
+            height: "100%",
+            width: "fit-content",
             position: "relative",
             padding: "4rem",
             transform: isFlat ? "rotateX(0deg)" : "rotateX(40deg)",
@@ -97,7 +102,6 @@ export default function Map({ gameData }: { gameData: GameData }) {
             alt="lisburn-map"
             style={{
               height: "100%",
-              width: "100%",
               pointerEvents: "none",
               filter: "drop-shadow(0 0.7em 0 rgba(0, 0, 0, 0.1))",
             }}

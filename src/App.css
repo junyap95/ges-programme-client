@@ -4,7 +4,7 @@
   width: 100% !important;
 }
 
-.backdrop {
+/* .backdrop {
   position: absolute;
   inset: 0;
   margin: auto;
@@ -13,7 +13,7 @@
   pointer-events: auto;
   width: 100vw;
   z-index: -2;
-}
+} */
 
 .popContainer {
   position: relative;
@@ -109,7 +109,7 @@
   align-items: center;
   border: 1px solid #000;
   height: 100svh;
-  width: 50vw;
+  width: 50svw;
   margin: auto;
   inset: 0;
   gap: 1em;

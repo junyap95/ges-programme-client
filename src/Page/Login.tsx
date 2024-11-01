@@ -49,7 +49,6 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("login", process.env.NODE_ENV, API_URL, process.env.REACT_APP_RENDER_URL);
     // Login logic
     if (userid) {
       setServerLoading(true);

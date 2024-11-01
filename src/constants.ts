@@ -28,4 +28,4 @@ export const QUIZ_SELECTION_API_URL =
 export const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://ges-programme-server.onrender.com"
-    : "http://localhost:3001";
+    : "http://192.168.1.153:3001";
