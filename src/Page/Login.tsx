@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { MarkerWrapper } from "../StyledComponents/styledComponents";
 import styled from "styled-components";
-import { API_URL } from "../constants";
+import { API_URL, SAM_LOADING } from "../constants";
 import IntroAutoType from "../Components/AutoTyper";
 
 const login = async (userid: string) => {
@@ -117,7 +117,7 @@ export default function Login() {
           <div style={{ padding: "1em" }}>
             <img
               className="sam-loading"
-              src="https://ik.imagekit.io/jbyap95/sam_anim03.gif?updatedAt=1729092923412"
+              src={SAM_LOADING}
               alt="studyseed-sam"
               style={{
                 // margin: "0 auto",

@@ -18,6 +18,8 @@ export const SAM_CONSTRUCTION =
 export const SAM_COMPLETION =
   "https://ik.imagekit.io/jbyap95/sam_constructor02_shadow.png?updatedAt=1730139103345";
 
+export const SAM_LOADING = "https://ik.imagekit.io/jbyap95/sam_anim03.gif?updatedAt=1729092923412";
+
 export const QUIZ_SELECTION_API_URL =
   process.env.NODE_ENV === "production"
     ? process.env.REACT_APP_QUIZ_SELECTION

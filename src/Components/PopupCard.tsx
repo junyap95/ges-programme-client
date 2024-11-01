@@ -4,7 +4,12 @@ import { CloseButton, Header1, PopupButton } from "../StyledComponents/styledCom
 import { X } from "lucide-react";
 import { AuthContext } from "../Context/AuthContext";
 import { getAttemptCount, getWeeklyLoginStatus } from "../helperFunctions";
-import { QUIZ_SELECTION_API_URL, SAM_COMPLETION, SAM_CONSTRUCTION } from "../constants";
+import {
+  QUIZ_SELECTION_API_URL,
+  SAM_COMPLETION,
+  SAM_CONSTRUCTION,
+  SAM_LOADING,
+} from "../constants";
 
 type PopupCardProps = {
   locAndWeekData: { week: string; loc: string };
@@ -16,6 +21,7 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
   const userProfile = context?.userProfile;
   const userid = localStorage.getItem("userid") ?? "";
   const [userGameData, setUserGameData] = useState({ attempts: 0, progress: "", scores: 0 });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +39,14 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
         console.error("Error fetching game progress in PopupCard:", err);
       }
     };
-    fetchData();
+
+    const loadData = async () => {
+      setLoading(true);
+      await fetchData();
+      setLoading(false);
+    };
+
+    loadData();
   }, [locAndWeekData.week, userGameData.scores, userid]);
 
   const handleAttempt = useCallback(async () => {
@@ -51,12 +64,17 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
   return (
     <div className="pop">
       <Header1>{locAndWeekData.loc}</Header1>
-      <img
-        src={userGameData.progress ? SAM_COMPLETION : SAM_CONSTRUCTION}
-        alt="sam-logo"
-        width={"100%"}
-        style={{ pointerEvents: "none" }}
-      />
+      {loading ? (
+        <img src={SAM_LOADING} alt="sam-logo" width={"100%"} style={{ pointerEvents: "none" }} />
+      ) : (
+        <img
+          src={userGameData.progress ? SAM_COMPLETION : SAM_CONSTRUCTION}
+          alt="sam-logo"
+          width={"100%"}
+          style={{ pointerEvents: "none" }}
+        />
+      )}
+
       <div style={{ textAlign: "center", width: "inherit", padding: "0 1em" }}>
         {userGameData.progress ? (
           <PopupButton
@@ -72,7 +90,9 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
             Completed
           </PopupButton>
         ) : (
-          <PopupButton onClick={handleAttempt}>Attempt</PopupButton>
+          <PopupButton disabled={loading} onClick={loading ? undefined : handleAttempt}>
+            Attempt
+          </PopupButton>
         )}
 
         <div style={{ padding: "1em 0 0 0" }}>Attempts: {userGameData.attempts}</div>
