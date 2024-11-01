@@ -77,8 +77,7 @@ export default function Map({ gameData }: { gameData: GameData }) {
           zIndex: -4,
           display: "flex",
           justifyContent: "center",
-          // position: "fixed",
-          border: "1px solid red",
+          // border: "1px solid red",
           background:
             "radial-gradient(circle, rgba(229, 229, 229, 1) 0%, rgba(103, 143, 201, 1) 70%)",
           perspective: "500px",
