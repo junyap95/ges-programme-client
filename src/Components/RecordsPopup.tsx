@@ -2,7 +2,6 @@ import { X, Star } from "lucide-react";
 import {
   LogoutPopupContainer,
   Popup,
-  Header1,
   CloseButton,
   Header2,
 } from "../StyledComponents/styledComponents";
