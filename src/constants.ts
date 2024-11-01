@@ -18,12 +18,12 @@ export const SAM_CONSTRUCTION =
 export const SAM_COMPLETION =
   "https://ik.imagekit.io/jbyap95/sam_constructor02_shadow.png?updatedAt=1730139103345";
 
-export const API_URL =
-  process.env.NODE_ENV === "production"
-    ? process.env.REACT_APP_RENDER_URL
-    : "http://localhost:3001";
-
 export const QUIZ_SELECTION_API_URL =
   process.env.NODE_ENV === "production"
     ? process.env.REACT_APP_QUIZ_SELECTION
     : "http://localhost:3002/ges-topic-selection";
+
+export const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://ges-programme-server.onrender.com"
+    : "http://localhost:3001";

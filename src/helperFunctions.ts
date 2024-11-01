@@ -121,6 +121,7 @@ export const incrementAttemptCount = async (userid: string, week: string) => {
 
 export const incrementUserStars = async (userid: string, amount: number) => {
   try {
+    console.log("client side run incrementUserStars");
     const response = await fetch(`${API_URL}/update/user-stars`, {
       method: "POST",
       headers: {

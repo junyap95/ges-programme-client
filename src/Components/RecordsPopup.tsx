@@ -27,7 +27,7 @@ export default function RecordsPopup({ handleRecordsPopup }: { handleRecordsPopu
   return (
     <LogoutPopupContainer>
       <Popup>
-        <Header1>Personal Records Coming Soon!</Header1>
+        <Header2>Personal Records Coming Soon!</Header2>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Star size={"2em"} strokeWidth={2} fill="#FCAF33" color="#333333" />
           <Header2 style={{ color: "#333333" }}>{starsCount}</Header2>

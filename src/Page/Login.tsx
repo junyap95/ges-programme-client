@@ -8,6 +8,7 @@ import IntroAutoType from "../Components/AutoTyper";
 
 const login = async (userid: string) => {
   try {
+    console.log(API_URL);
     const params = { userid: userid };
     const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
@@ -17,7 +18,11 @@ const login = async (userid: string) => {
       body: JSON.stringify(params),
     });
 
-    if (response.ok) return await response.json();
+    if (response.ok) {
+      return await response.json();
+    } else {
+      return { operation: false };
+    }
   } catch (error) {
     console.error("Error:", error);
   }
@@ -44,13 +49,15 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("login", process.env.NODE_ENV, API_URL, process.env.REACT_APP_RENDER_URL);
     // Login logic
     if (userid) {
-      const loginRes = await login(userid);
       setServerLoading(true);
+      const loginRes = await login(userid);
       if (loginRes.operation) {
         setLoginError(false);
         context?.signInContext(userid); /** Setting context state */
+
         navigate("/game-map");
       } else {
         setLoginError(true);

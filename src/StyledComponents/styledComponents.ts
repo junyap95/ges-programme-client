@@ -20,7 +20,7 @@ export const MarkerWrapper = styled.button`
   font-weight: 600;
   transform-origin: center;
   padding: 1em 0.5em;
-  transition: all 0.1s ease;
+  transition: all 0.1s ease-in-out;
   cursor: pointer;
   border: 2px solid #333333;
   border-radius: 0.3em;
@@ -30,11 +30,12 @@ export const MarkerWrapper = styled.button`
     background-color: #f58439;
     cursor: pointer;
     box-shadow: 0px 0.2em 0px 0px #333333;
-    transform: translateY(0.2em);suuususu
+    transform: translateY(0.2em);
   }
 
   &.active {
     animation: ${pulse} 2s infinite;
+    transition: all 0.1s ease-in-out;
   }
 `;
 
@@ -201,6 +202,6 @@ export const Popup = styled.div`
 
   background-color: rgba(255, 255, 255, 0.75);
 
-  padding: 2rem 8rem;
+  padding: 2rem 6rem;
   gap: 2rem;
 `;

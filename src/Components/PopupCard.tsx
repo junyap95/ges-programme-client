@@ -38,13 +38,15 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
 
   const handleAttempt = useCallback(async () => {
     // If first ever attempt, stars + 1
+    console.log(userGameData.attempts);
     if (userGameData.attempts === 0) await incrementUserStars(userid, 1);
 
     // THEN NAVIGATE TO QUIZ
-    const userData = { ...userProfile, userid, currentAttempt: userGameData.attempts + 1 };
+    const userData = { ...userProfile, userid, currentAttempt: userGameData.attempts };
     const userDataParams = encodeURIComponent(JSON.stringify(userData));
     window.location.href = `${QUIZ_SELECTION_API_URL}?course=ges&week=${locAndWeekData.week}&data=${userDataParams}`;
   }, [locAndWeekData.week, userGameData.attempts, userProfile, userid]);
+  console.log(userGameData.attempts);
 
   return (
     <div className="pop">
