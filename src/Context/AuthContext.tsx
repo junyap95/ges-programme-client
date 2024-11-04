@@ -4,6 +4,7 @@ import { fetchUserProfile } from "../helperFunctions";
 export type UserProfile = {
   username: string;
   avatar: string;
+  course: string[];
 };
 
 interface AuthContextProps {
@@ -20,6 +21,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [userProfile, setUserProfile] = useState<UserProfile>({
     username: "",
     avatar: "",
+    course: [],
   });
 
   useEffect(() => {
@@ -37,19 +39,32 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("isSignedIn", JSON.stringify(true));
 
     fetchUserProfile(userid).then((data) => {
+      const courseEnrolled = [];
+      const { userData, userCourse } = data;
+      const { literacy, numeracy } = userCourse;
+      if (numeracy) courseEnrolled.push("Numeracy");
+      if (literacy) courseEnrolled.push("Literacy");
       if (data) {
-        setUserProfile({ username: `${data.first_name} ${data.last_name}`, avatar: data.avatar });
+        setUserProfile({
+          username: `${userData.first_name} ${userData.last_name}`,
+          avatar: userData.avatar,
+          course: courseEnrolled,
+        });
         localStorage.setItem("userid", userid);
         localStorage.setItem(
           "userProfile",
-          JSON.stringify({ username: `${data.first_name} ${data.last_name}`, avatar: data.avatar })
+          JSON.stringify({
+            username: `${userData.first_name} ${userData.last_name}`,
+            avatar: userData.avatar,
+            course: courseEnrolled,
+          })
         );
       }
     });
   };
 
   const signOut = () => {
-    setUserProfile({ username: "", avatar: "" });
+    setUserProfile({ username: "", avatar: "", course: [] });
     setIsSignedIn(false);
     localStorage.clear();
   };

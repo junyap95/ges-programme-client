@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { MarkerWrapper } from "../StyledComponents/styledComponents";
@@ -8,7 +8,6 @@ import IntroAutoType from "../Components/AutoTyper";
 
 const login = async (userid: string) => {
   try {
-    console.log(API_URL);
     const params = { userid: userid };
     const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
@@ -36,7 +35,7 @@ export default function Login() {
   const [btnActive, setBtnActive] = useState(false);
   const [serverLoading, setServerLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginError(false);
     setServerLoading(false);
     if (e.target.value.length >= 5) {
@@ -45,25 +44,28 @@ export default function Login() {
       setBtnActive(false);
     }
     setUserId(e.target.value.toUpperCase());
-  };
+  }, []);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Login logic
-    if (userid) {
-      setServerLoading(true);
-      const loginRes = await login(userid);
-      if (loginRes.operation) {
-        setLoginError(false);
-        context?.signInContext(userid); /** Setting context state */
+  const handleLogin = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      // Login logic
+      if (userid) {
+        setServerLoading(true);
+        const loginRes = await login(userid);
+        if (loginRes.operation) {
+          setLoginError(false);
+          context?.signInContext(userid); /** Setting context state */
 
-        navigate("/game-map");
-      } else {
-        setLoginError(true);
-        setServerLoading(false);
+          navigate("/game-map");
+        } else {
+          setLoginError(true);
+          setServerLoading(false);
+        }
       }
-    }
-  };
+    },
+    [userid, context, navigate]
+  );
 
   return (
     <div className="login-container">

@@ -23,15 +23,13 @@ import LoadingFullPageAnimation from "../Components/LoadingFullPageAnimation";
 function transformImageUrl(url: string, transformationString: string) {
   // Check if the URL contains 'imagekit.io'
   const imageKitMarker = "imagekit.io/jbyap95/";
-
   // Find the position where the transformation should be inserted
   const position = url.indexOf(imageKitMarker) + imageKitMarker.length;
-
   // Insert the transformation string at the correct position in the URL
   const transformedUrl = url.slice(0, position) + transformationString + "/" + url.slice(position);
-
   return transformedUrl;
 }
+export type MapTopic = "Numeracy" | "Literacy";
 
 export default function MapContainer() {
   const context = useContext(AuthContext);
@@ -41,6 +39,7 @@ export default function MapContainer() {
   const [gameData, setGameData] = useState({});
   const [loading, setLoading] = useState(true);
   const isLoggedin = localStorage.getItem("isSignedIn");
+  const [currTopic, setCurrTopic] = useState<MapTopic>("Numeracy");
 
   const handleAvatarPopup = useCallback(() => {
     setAvatarPopup(!avatarPopup);
@@ -63,11 +62,14 @@ export default function MapContainer() {
     const fetchData = async () => {
       try {
         setLoading(true);
+        const currentTopic = context?.userProfile.course[0] as MapTopic;
         const data = await fetchGameData();
         setGameData(data);
+        setCurrTopic(currentTopic);
         localStorage.setItem("gameData", JSON.stringify(data));
+        localStorage.setItem("currTopic", currentTopic);
       } catch (err) {
-        //TODO: handle error
+        console.error("Error fetching game data in MapContainer:", err);
       } finally {
         setTimeout(() => {
           setLoading(false);
@@ -75,7 +77,7 @@ export default function MapContainer() {
       }
     };
     fetchData();
-  }, []);
+  }, [context?.userProfile.course]);
 
   if (loading) return <LoadingFullPageAnimation />;
 
@@ -127,18 +129,19 @@ export default function MapContainer() {
         </NavElement>
       </NavBar>
 
-      <Map gameData={gameData} />
+      <Map gameData={gameData} currTopic={currTopic} setCurrTopic={setCurrTopic} />
 
       <FootBar>
         <div
           style={{
+            fontSize: "0.8em",
             fontWeight: "600",
             color: "#e5e5e5",
             filter: "drop-shadow(0 0.15em 0 rgba(43, 73, 109, 1))",
             pointerEvents: "none",
           }}
         >
-          {context?.userProfile.username || "Username"}
+          {context?.userProfile.username || "Username"} | {currTopic}
         </div>
 
         <div>

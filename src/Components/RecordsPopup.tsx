@@ -11,18 +11,19 @@ import { useEffect, useState } from "react";
 export default function RecordsPopup({ handleRecordsPopup }: { handleRecordsPopup: () => void }) {
   const userid = localStorage.getItem("userid") ?? "";
   const [starsCount, setStarsCount] = useState(0);
+  const { currTopic } = localStorage;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const scores = await getScores(userid);
+        const scores = await getScores(userid, currTopic);
         setStarsCount(scores.stars);
       } catch (err) {
         console.error("Error fetching stars count in records:", err);
       }
     };
     fetchData();
-  }, [userid]);
+  }, [currTopic, userid]);
   return (
     <LogoutPopupContainer>
       <Popup>

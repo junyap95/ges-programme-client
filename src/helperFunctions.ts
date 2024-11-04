@@ -10,7 +10,6 @@ export const fetchUserProgress = async (userid: any) => {
       },
       body: JSON.stringify(params),
     });
-    console.log("response client", response);
     if (response.ok) {
       return await response.json();
     }
@@ -38,7 +37,6 @@ export const fetchGameData = async () => {
         "Content-Type": "application/json",
       },
     });
-    console.log("response game data", response);
     if (response.ok) {
       return await response.json();
     }
@@ -47,21 +45,9 @@ export const fetchGameData = async () => {
   }
 };
 
-export const getWeeklyLoginStatus = async (userid: string) => {
+export const getWeeklyLoginStatus = async (userid: string, course: string) => {
   try {
-    const response = await fetch(`${API_URL}/get/user-progress?userid=${userid}`);
-
-    if (response.ok) {
-      return await response.json();
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
-
-export const getAttemptCount = async (userid: string) => {
-  try {
-    const response = await fetch(`${API_URL}/get/user-attempts?userid=${userid}`);
+    const response = await fetch(`${API_URL}/get/user-progress?userid=${userid}&course=${course}`);
 
     if (response.ok) {
       return await response.json();
@@ -71,9 +57,20 @@ export const getAttemptCount = async (userid: string) => {
   }
 };
 
-export const getScores = async (userid: string) => {
+export const getAttemptCount = async (userid: string, course: string) => {
   try {
-    const response = await fetch(`${API_URL}/get/user-scores?userid=${userid}`);
+    const response = await fetch(`${API_URL}/get/user-attempts?userid=${userid}&course=${course}`);
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+export const getScores = async (userid: string, course: string) => {
+  try {
+    const response = await fetch(`${API_URL}/get/user-scores?userid=${userid}&course=${course}`);
 
     if (response.ok) {
       return await response.json();
@@ -121,7 +118,6 @@ export const incrementAttemptCount = async (userid: string, week: string) => {
 
 export const incrementUserStars = async (userid: string, amount: number) => {
   try {
-    console.log("client side run incrementUserStars");
     const response = await fetch(`${API_URL}/update/user-stars`, {
       method: "POST",
       headers: {

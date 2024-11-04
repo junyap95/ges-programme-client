@@ -20,21 +20,28 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
   const context = useContext(AuthContext);
   const userProfile = context?.userProfile;
   const userid = localStorage.getItem("userid") ?? "";
-  const [userGameData, setUserGameData] = useState({ attempts: 0, progress: "", scores: 0 });
+  const [userGameData, setUserGameData] = useState({
+    attempts: 0,
+    progress: "",
+    scores: 0,
+    course: "",
+  });
   const [loading, setLoading] = useState(false);
+  const { currTopic } = localStorage;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const attempts = await getAttemptCount(userid); /**To be refactored */
-        const progress = await getWeeklyLoginStatus(userid);
-        const scores = await getScores(userid);
-        setUserGameData((prevData) => ({
-          ...prevData,
+        const attempts = await getAttemptCount(userid, currTopic); /**To be refactored */
+        const progress = await getWeeklyLoginStatus(userid, currTopic);
+        const scores = await getScores(userid, currTopic);
+
+        setUserGameData({
           attempts: attempts[locAndWeekData.week],
           progress: progress[locAndWeekData.week],
           scores: scores[locAndWeekData.week],
-        }));
+          course: currTopic,
+        });
       } catch (err) {
         console.error("Error fetching game progress in PopupCard:", err);
       }
@@ -47,19 +54,22 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
     };
 
     loadData();
-  }, [locAndWeekData.week, userGameData.scores, userid]);
+  }, [currTopic, locAndWeekData.week, userid]);
 
   const handleAttempt = useCallback(async () => {
     // If first ever attempt, stars + 1
-    console.log(userGameData.attempts);
     if (userGameData.attempts === 0) await incrementUserStars(userid, 1);
 
     // THEN NAVIGATE TO QUIZ
-    const userData = { ...userProfile, userid, currentAttempt: userGameData.attempts };
+    const userData = {
+      ...userProfile,
+      userid,
+      currentAttempt: userGameData.attempts,
+      currTopic: currTopic,
+    };
     const userDataParams = encodeURIComponent(JSON.stringify(userData));
     window.location.href = `${QUIZ_SELECTION_API_URL}?course=ges&week=${locAndWeekData.week}&data=${userDataParams}`;
-  }, [locAndWeekData.week, userGameData.attempts, userProfile, userid]);
-  console.log(userGameData.attempts);
+  }, [currTopic, locAndWeekData.week, userGameData.attempts, userProfile, userid]);
 
   return (
     <div className="pop">
