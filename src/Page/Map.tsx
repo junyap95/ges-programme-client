@@ -11,7 +11,6 @@ import {
   GameMapContainer,
   GameMapSubwrapper,
 } from "../StyledComponents/styledForMap";
-import { AvatarContainer } from "../StyledComponents/styledForNavAndFooter";
 
 type GameData = {
   [key: string]: {

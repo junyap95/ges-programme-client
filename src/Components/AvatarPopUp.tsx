@@ -1,4 +1,3 @@
-import styled, { keyframes } from "styled-components";
 import { CloseButton, Header1, Header2 } from "../StyledComponents/styledComponents";
 import { X } from "lucide-react";
 import Slider from "react-slick";
