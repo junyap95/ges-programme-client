@@ -131,3 +131,35 @@ export const incrementUserStars = async (userid: string, amount: number) => {
     console.error("Error incrementing user stars:", error);
   }
 };
+
+export const login = async (userid: string) => {
+  try {
+    const params = { userid: userid };
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    });
+
+    if (response.ok) {
+      return await response.json();
+    } else {
+      return { operation: false };
+    }
+  } catch (error) {
+    console.error("Login Error:", error);
+    return { operation: false };
+  }
+};
+
+export function transformImageUrl(url: string, transformationString: string) {
+  // Check if the URL contains 'imagekit.io'
+  const imageKitMarker = "imagekit.io/jbyap95/";
+  // Find the position where the transformation should be inserted
+  const position = url.indexOf(imageKitMarker) + imageKitMarker.length;
+  // Insert the transformation string at the correct position in the URL
+  const transformedUrl = url.slice(0, position) + transformationString + "/" + url.slice(position);
+  return transformedUrl;
+}

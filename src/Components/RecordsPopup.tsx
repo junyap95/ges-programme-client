@@ -1,11 +1,6 @@
 import { X, Star } from "lucide-react";
-import {
-  LogoutPopupContainer,
-  Popup,
-  CloseButton,
-  Header2,
-} from "../StyledComponents/styledComponents";
-import { getScores } from "../helperFunctions";
+import { CloseButton, Header2 } from "../StyledComponents/styledComponents";
+import { getScores } from "../utils/helperFunctions";
 import { useEffect, useState } from "react";
 
 export default function RecordsPopup({ handleRecordsPopup }: { handleRecordsPopup: () => void }) {
@@ -25,8 +20,8 @@ export default function RecordsPopup({ handleRecordsPopup }: { handleRecordsPopu
     fetchData();
   }, [currTopic, userid]);
   return (
-    <LogoutPopupContainer>
-      <Popup>
+    <div className="pop-container">
+      <div className="pop-card">
         <Header2>Personal Records Coming Soon!</Header2>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Star size={"2em"} strokeWidth={2} fill="#FCAF33" color="#333333" />
@@ -38,7 +33,7 @@ export default function RecordsPopup({ handleRecordsPopup }: { handleRecordsPopu
         <CloseButton style={{ width: "fit-content" }} onClick={handleRecordsPopup}>
           <X size={"2em"} strokeWidth={4} color="#e5e5e5" />
         </CloseButton>
-      </Popup>
-    </LogoutPopupContainer>
+      </div>
+    </div>
   );
 }

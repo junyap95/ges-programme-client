@@ -41,10 +41,12 @@ export default function Marker({ activeDate, coordinate, tileData, clickHandler 
       style={{
         left: `${coordinate.x}px`,
         top: `${coordinate.y}px`,
+        // left: `0px`,
+        // top: `0px`,
         zIndex: 1,
         backgroundColor: isActive ? "#3380fc" : "grey",
         pointerEvents: isActive ? "auto" : "none",
-        fontSize: isActive ? "0.75em" : "0.5rem",
+        fontSize: isActive ? "0.75em" : "0.5em",
         scale: isVisible ? "1" : "0",
       }}
       onClick={clickHandler}

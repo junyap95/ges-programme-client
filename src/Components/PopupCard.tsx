@@ -1,15 +1,11 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { getScores, incrementUserStars } from "../helperFunctions";
+import { getScores, incrementUserStars } from "../utils/helperFunctions";
 import { CloseButton, Header1, PopupButton } from "../StyledComponents/styledComponents";
 import { X } from "lucide-react";
 import { AuthContext } from "../Context/AuthContext";
-import { getAttemptCount, getWeeklyLoginStatus } from "../helperFunctions";
-import {
-  QUIZ_SELECTION_API_URL,
-  SAM_COMPLETION,
-  SAM_CONSTRUCTION,
-  SAM_LOADING,
-} from "../constants";
+import { getAttemptCount, getWeeklyLoginStatus } from "../utils/helperFunctions";
+import { QUIZ_SELECTION_API_URL, SAM_COMPLETION, SAM_CONSTRUCTION } from "../utils/constants";
+import PopupSkeleton from "./PopupSkeleton";
 
 type PopupCardProps = {
   locAndWeekData: { week: string; loc: string };
@@ -26,7 +22,7 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
     scores: 0,
     course: "",
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { currTopic } = localStorage;
 
   useEffect(() => {
@@ -50,9 +46,8 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
     const loadData = async () => {
       setLoading(true);
       await fetchData();
-      setLoading(false);
+      setTimeout(() => setLoading(false), 250);
     };
-
     loadData();
   }, [currTopic, locAndWeekData.week, userid]);
 
@@ -72,44 +67,47 @@ export default function PopupCard({ locAndWeekData, onClose }: PopupCardProps) {
   }, [currTopic, locAndWeekData.week, userGameData.attempts, userProfile, userid]);
 
   return (
-    <div className="pop">
-      <Header1>{locAndWeekData.loc}</Header1>
-      {loading ? (
-        <img src={SAM_LOADING} alt="sam-logo" width={"100%"} style={{ pointerEvents: "none" }} />
-      ) : (
-        <img
-          src={userGameData.progress ? SAM_COMPLETION : SAM_CONSTRUCTION}
-          alt="sam-logo"
-          width={"100%"}
-          style={{ pointerEvents: "none" }}
-        />
-      )}
-
-      <div style={{ textAlign: "center", width: "inherit", padding: "0 1em" }}>
-        {userGameData.progress ? (
-          <PopupButton
-            style={{
-              boxShadow: "none",
-              border: "solid 2px #3380fc",
-              backgroundColor: "transparent",
-              color: "#3380fc",
-              fontWeight: "400",
-              pointerEvents: "none",
-            }}
-          >
-            Completed
-          </PopupButton>
+    <div className="pop-container">
+      <div className="pop-card" style={{ padding: loading ? "1em 2em" : "1em 0" }}>
+        {loading ? (
+          <PopupSkeleton />
         ) : (
-          <PopupButton disabled={loading} onClick={loading ? undefined : handleAttempt}>
-            Attempt
-          </PopupButton>
-        )}
+          <>
+            <Header1>{locAndWeekData.loc}</Header1>
+            <img
+              src={userGameData.progress ? SAM_COMPLETION : SAM_CONSTRUCTION}
+              alt="sam-logo"
+              width={"100%"}
+              style={{ pointerEvents: "none" }}
+            />
+            <div style={{ textAlign: "center", width: "inherit", padding: "0 1em" }}>
+              {userGameData.progress ? (
+                <PopupButton
+                  style={{
+                    boxShadow: "none",
+                    border: "solid 2px #3380fc",
+                    backgroundColor: "transparent",
+                    color: "#3380fc",
+                    fontWeight: "400",
+                    pointerEvents: "none",
+                  }}
+                >
+                  Completed
+                </PopupButton>
+              ) : (
+                <PopupButton disabled={loading} onClick={loading ? undefined : handleAttempt}>
+                  Attempt
+                </PopupButton>
+              )}
 
-        <div style={{ padding: "1em 0 0 0" }}>Attempts: {userGameData.attempts}</div>
+              <div style={{ padding: "1em 0 0 0" }}>Attempts: {userGameData.attempts}</div>
+            </div>
+          </>
+        )}
+        <CloseButton onClick={onClose}>
+          <X size={"2em"} strokeWidth={4} color="#e5e5e5" />
+        </CloseButton>
       </div>
-      <CloseButton onClick={onClose}>
-        <X size={"2em"} strokeWidth={4} color="#e5e5e5" />
-      </CloseButton>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { CloseButton, Header1 } from "../StyledComponents/styledComponents";
+import { CloseButton, Header1, Header2 } from "../StyledComponents/styledComponents";
 import { X } from "lucide-react";
 import Slider from "react-slick";
 import { ChevronRight } from "lucide-react";
@@ -24,6 +24,8 @@ const avatars = [
 ];
 
 const settings = {
+  centerPadding: "10px",
+  autoplay: true,
   dots: true,
   infinite: true,
   speed: 500,
@@ -49,9 +51,9 @@ export default function AvatarPopup({ title, clickHandler }: AvatarPopUpProps) {
   };
 
   return (
-    <PopupContainer>
-      <AvatarPopupWrapper>
-        <Header1>Coming Soon!</Header1>
+    <div className="pop-container">
+      <div className="pop-card">
+        <Header1>Avatar</Header1>
         <div style={{ width: "100%" }}>
           <Slider {...settings} afterChange={handleChange} centerMode={true}>
             {avatars.map((avatar, index) => (
@@ -66,65 +68,15 @@ export default function AvatarPopup({ title, clickHandler }: AvatarPopUpProps) {
             ))}
           </Slider>
         </div>
+        <br />
+        <br />
 
-        {/* <PopupButton>{imgRefs.current[currentIndex]?.id}</PopupButton> */}
+        <Header2>Coming soon!</Header2>
 
         <CloseButton onClick={clickHandler}>
           <X size={"2em"} strokeWidth={4} color="#f5f5f5" />
         </CloseButton>
-      </AvatarPopupWrapper>
-    </PopupContainer>
+      </div>
+    </div>
   );
 }
-
-const flipIn = keyframes`
-  from {
-    transform: rotateY(90deg);
-    opacity: 0;
-  }
-  to {
-    transform: rotateY(0);
-    opacity: 1;
-  }
-`;
-
-const AvatarPopupWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  border-radius: 1em;
-  width: 30rem;
-  height: 30rem;
-  padding: 1em;
-  position: relative;
-  background-color: rgba(255, 255, 255, 0.7);
-  top: 700%;
-  left: -50%;
-  user-select: none;
-  animation: ${flipIn} 0.25s ease-out;
-
-  &::after {
-    content: "";
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-image: conic-gradient(from var(--angle), #f58439, #3380fc, #f58439);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 0.5em;
-    border-radius: 1.5em;
-    animation: 5s spin linear infinite;
-    box-shadow: 0 0.5em 0 0 #333333;
-    z-index: -1;
-  }
-`;
-
-const PopupContainer = styled.div`
-  position: fixed;
-  top: 80%;
-  left: 50%;
-  transform: translate(0%, -100%);
-  z-index: 10;
-`;

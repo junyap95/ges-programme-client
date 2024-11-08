@@ -1,11 +1,17 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Marker from "../Components/Marker";
 import PopupCard from "../Components/PopupCard";
-import { tiles } from "../constants";
+import { tiles } from "../utils/constants";
 import { ChevronRight } from "lucide-react";
-import { AvatarContainer } from "../StyledComponents/styledComponents";
-import { MapTopic } from "./MapContainer";
+import { MapTopic } from "./Home";
 import { AuthContext } from "../Context/AuthContext";
+import {
+  ChangeMapArrow,
+  GameMap,
+  GameMapContainer,
+  GameMapSubwrapper,
+} from "../StyledComponents/styledForMap";
+import { AvatarContainer } from "../StyledComponents/styledForNavAndFooter";
 
 type GameData = {
   [key: string]: {
@@ -32,6 +38,8 @@ export default function Map({ gameData, currTopic, setCurrTopic }: MapProps) {
   const [locAndWeek, setLocAndWeek] = useState({ loc: "", week: "" });
   const [isFlat, setIsFlat] = useState(false);
   const [animationDone, setAnimationDone] = useState(false);
+
+  console.log({ height, width });
 
   const resizeHandler = () => {
     if (mapRef.current) {
@@ -69,8 +77,7 @@ export default function Map({ gameData, currTopic, setCurrTopic }: MapProps) {
     const timer = setTimeout(() => {
       resizeHandler();
       setAnimationDone(true);
-    }, 1200);
-
+    }, 1005);
     return () => clearTimeout(timer); // Cleanup the timeout on unmount
   }, []);
 
@@ -81,59 +88,10 @@ export default function Map({ gameData, currTopic, setCurrTopic }: MapProps) {
   };
 
   return (
-    <div
-      style={{
-        width: "100svw",
-        height: "100svh",
-        zIndex: popup ? 4 : 2,
-        position: "relative",
-      }}
-    >
-      {numberOfCourses > 1 && (
-        <AvatarContainer
-          style={{
-            height: "fit-content",
-            width: "fit-content",
-            position: "absolute",
-            padding: "0.2em",
-            zIndex: 5,
-            right: "1em",
-            top: "50%",
-            backgroundColor: "#f5a039",
-          }}
-          onClick={handleChangeMap}
-        >
-          <ChevronRight />
-        </AvatarContainer>
-      )}
-
-      <div
-        style={{
-          height: "100%",
-          zIndex: -4,
-          display: "flex",
-          justifyContent: "center",
-          // border: "1px solid red",
-          background:
-            currTopic === "Numeracy"
-              ? "radial-gradient(circle, rgba(229, 229, 229, 1) 0%, rgba(103, 143, 201, 1) 70%)"
-              : "radial-gradient(circle, rgba(229,229,229,1) 0%, rgba(103, 180, 201, 1) 80%)",
-          perspective: "500px",
-        }}
-      >
-        <div
-          style={{
-            // border: "1px solid green",
-            height: "100%",
-            width: "fit-content",
-            position: "relative",
-            padding: "4rem",
-            transform: isFlat ? "rotateX(0deg)" : "rotateX(40deg)",
-            transition: "all 1s ease-in-out",
-            transformStyle: "preserve-3d",
-          }} /** This div is needed to contain the img and the markers. Because Marker's absolute position is only affected by its parent, not siblings */
-        >
-          <img
+    <>
+      <GameMapContainer>
+        <GameMapSubwrapper style={{ transform: isFlat ? "rotateX(0deg)" : "rotateX(40deg)" }}>
+          <GameMap
             ref={mapRef}
             src={
               currTopic === "Numeracy"
@@ -141,12 +99,6 @@ export default function Map({ gameData, currTopic, setCurrTopic }: MapProps) {
                 : "https://ik.imagekit.io/jbyap95/Map_no%20shadow.png?updatedAt=1729330471856"
             }
             alt="lisburn-map"
-            style={{
-              height: "100%",
-              pointerEvents: "none",
-              filter: "drop-shadow(0 0.7em 0 rgba(0, 0, 0, 0.1))",
-              userSelect: "none",
-            }}
           />
 
           {animationDone &&
@@ -162,15 +114,14 @@ export default function Map({ gameData, currTopic, setCurrTopic }: MapProps) {
                 key={index}
               />
             ))}
-        </div>
-      </div>
-
-      {popup && (
-        <div className="popContainer">
-          <PopupCard locAndWeekData={locAndWeek} onClose={() => setPopup(false)} />
-          <div className="backdrop" />
-        </div>
+        </GameMapSubwrapper>
+      </GameMapContainer>
+      {popup && <PopupCard locAndWeekData={locAndWeek} onClose={() => setPopup(false)} />}
+      {numberOfCourses > 1 && (
+        <ChangeMapArrow onClick={handleChangeMap}>
+          <ChevronRight />
+        </ChangeMapArrow>
       )}
-    </div>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
-import { fetchUserProfile } from "../helperFunctions";
+import { fetchUserProfile } from "../utils/helperFunctions";
 
 export type UserProfile = {
   username: string;

@@ -1,22 +1,11 @@
-.test {
+/* .test {
   display: flex !important;
   justify-content: center !important;
   width: 100% !important;
-}
-
-/* .backdrop {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(1rem);
-  pointer-events: auto;
-  width: 100vw;
-  z-index: -2;
 } */
 
-.popContainer {
-  position: relative;
+.pop-container {
+  position: absolute;
   display: flex;
   width: 100%;
   height: 100%;
@@ -24,27 +13,34 @@
   backdrop-filter: blur(0.8rem);
   pointer-events: auto;
   width: 100vw;
-  top: -100%;
-  left: -0%;
-  z-index: 2;
+  z-index: 4;
 }
 
-.pop {
+.flex-1 {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.pop-card {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   border-radius: 1em;
   width: 20rem;
-  padding: 1em;
+  max-height: fit-content;
+  min-height: 30rem;
+  padding: 1em 0;
   background-color: rgba(255, 255, 255, 0.75);
-  margin: 7rem auto;
+  margin: auto;
+  inset: 0;
   user-select: none;
-  position: relative;
-  animation: flipIn 0.2s ease-in-out;
+  /* animation: flipIn 0.2s ease-in-out; */
 }
 
-@keyframes flipIn {
+/* @keyframes flipIn {
   from {
     transform: rotateY(90deg);
     opacity: 0;
@@ -53,7 +49,7 @@
     transform: rotateY(0);
     opacity: 1;
   }
-}
+} */
 
 @property --angle {
   syntax: "<angle>";
@@ -61,8 +57,8 @@
   initial-value: 0deg;
 }
 
-.pop::after,
-.pop::before {
+.pop-card::after,
+.pop-card::before {
   position: absolute;
   content: "";
   height: 100%;
@@ -73,26 +69,16 @@
   transform: translate(-50%, -50%);
   padding: 0.5em;
   border-radius: 1.5em;
-  animation: 2s spin linear infinite;
   z-index: -1;
 }
 
-.pop::after {
+.pop-card::after {
   box-shadow: 0 0.5em 0 0 #333333;
 }
 
-.pop::before {
+.pop-card::before {
   filter: blur(1rem);
   opacity: 1;
-}
-
-@keyframes spin {
-  from {
-    --angle: 0deg;
-  }
-  to {
-    --angle: 360deg;
-  }
 }
 
 .login-container {
@@ -123,23 +109,23 @@
 }
 
 .sam-right {
-  animation: slideInFromRight 1s ease-in-out;
+  animation: slideInFromRight 750ms ease-in-out;
 }
 
 .sam-left {
-  animation: slideInFromLeft 1s ease-in-out;
+  animation: slideInFromLeft 750ms ease-in-out;
 }
 
 .studyseed-logo {
-  animation: slideInFromTop 1s ease-in-out;
+  animation: slideInFromTop 750ms ease-in-out;
 }
 
 .login-form {
-  animation: slideInFromBottom 1s ease-in-out;
+  animation: slideInFromBottom 750ms ease-in-out;
 }
 
 .sam-loading {
-  animation: slideInFromLeft 1s ease-in-out;
+  animation: slideInFromLeft 750ms ease-in-out;
 }
 
 @keyframes slideInFromRight {
@@ -191,5 +177,18 @@
   100% {
     transform: translateY(0) scale(1);
     opacity: 1;
+  }
+}
+
+.login-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

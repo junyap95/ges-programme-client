@@ -2,13 +2,13 @@ import styled, { keyframes } from "styled-components";
 
 const pulse = keyframes`
   0% {
-    transform: scale(1);
+    transform: scale(1) translate(-50%, -50%);
   }
   50% {
-    transform: scale(1.1);
+    transform: scale(1.1) translate(-50%, -50%);
   }
   100% {
-    transform: scale(1);
+    transform: scale(1) translate(-50%, -50%);
   }
 `;
 
@@ -18,7 +18,9 @@ export const MarkerWrapper = styled.button`
   color: #f5f5f5;
   position: absolute;
   font-weight: 600;
-  transform-origin: center;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+
   padding: 1em 0.5em;
   transition: all 0.1s ease-in-out;
   cursor: pointer;
@@ -30,12 +32,16 @@ export const MarkerWrapper = styled.button`
     background-color: #f58439;
     cursor: pointer;
     box-shadow: 0px 0.2em 0px 0px #333333;
-    transform: translateY(0.2em);
+    /* add transform here so on marker click doesn't displace its position */
+    transform: translateY(0.2em) translate(-50%, -50%);
   }
 
   &.active {
-    animation: ${pulse} 2s infinite;
-    transition: all 0.1s ease-in-out;
+    animation: ${pulse} 3s infinite;
+    transition: all 0.2s ease;
+    /* transform: translate(-50%, -50%); */
+
+    /* transform-origin: center; */
   }
 `;
 
@@ -50,7 +56,6 @@ export const PopupButton = styled.button`
   border: 2px solid #333333;
   border-radius: 1em;
   box-shadow: 0px 6px 0px 0px #333333;
-  drop-shadow: 0 2rem 0 #333333;
 
   &:hover {
     transform: scale(1.05);
@@ -73,7 +78,7 @@ export const CloseButton = styled.button`
   border: 2px solid #333333;
   border-radius: 1em;
   box-shadow: 0px 6px 0px 0px #333333;
-  drop-shadow: 0 2rem 0 #333333;
+
   cursor: pointer;
 
   &:active {
@@ -98,80 +103,16 @@ export const Header2 = styled.h2`
   font-size: 1.5rem;
 `;
 
-export const GameContainer = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-`;
-
-export const NavBar = styled.nav`
-  position: fixed;
-  top: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 1em;
-  color: #333333;
-  align-items: center;
-  width: 100%;
-  height: 5rem;
-  border: 0px solid red;
-  z-index: 3;
-`;
-
 // export const MapWrapper = styled.div`
 //   height: 100%;
 //   width: 100%;
 //   z-index: 4;
 // `;
 
-export const FootBar = styled.nav`
-  position: fixed;
-  display: flex;
-  justify-content: space-between;
-
-  align-items: center;
-  width: 100%;
-  border: 0px solid red;
-  padding: 1em;
-  bottom: 0;
-  margin: 0;
-  z-index: 3;
-`;
-
-export const NavElement = styled.div`
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  gap: 1em;
-`;
-
-export const AvatarContainer = styled.div`
-  height: inherit;
-  border: 2px solid #333333;
-  border-radius: 1em;
-  cursor: pointer;
-  overflow: hidden;
-  width: 3em;
-  box-shadow: 0px 3px 0px 0px #333333;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:active {
-    box-shadow: 0px 3px 0px 0px #333333;
-    transform: translateY(2px) scale(0.9);
-  }
-`;
-
 export const AvatarImage = styled.img`
-  width: 200%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
+  height: 120%;
+  /* object-fit: contain; */
+  /* position: absolute; */
   transform: translate(-3%);
   background-color: #f5f5f5;
 `;
@@ -204,4 +145,74 @@ export const Popup = styled.div`
 
   padding: 2rem 6rem;
   gap: 2rem;
+`;
+
+export const FillInputs = styled.input`
+  box-sizing: border-box;
+  width: 100%;
+  height: 3em;
+  font-size: 1em;
+  text-align: center;
+  caret-color: #2b496d;
+  color: #333333;
+  border: 0px solid #3380fc;
+  border-bottom: 2px solid #2b496d;
+  background-color: transparent;
+
+  &::placeholder {
+    color: #2b496d;
+  }
+
+  &:focus {
+    outline: none;
+    &::placeholder {
+      color: transparent;
+    }
+  }
+`;
+
+export const LoginFormWrapper = styled.div<{
+  $isLoading?: boolean;
+}>`
+  position: relative;
+  top: 10%;
+  width: 25rem;
+  padding: 3rem;
+  border: 2px solid #3380fc;
+  height: 14rem;
+
+  background-color: rgba(229, 229, 229, 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 0px solid rgba(255, 255, 255, 0.1);
+
+  ${(props) => props.$isLoading && `visibility: hidden;`}
+`;
+
+export const ErrorMsg = styled.small`
+  position: absolute;
+  top: -50%;
+  left: 0%;
+  right: 0%;
+  color: #f5394c;
+  white-space: nowrap;
+`;
+
+export const LoginBtn = styled.button<{ $btnActive?: boolean }>`
+  background-color: ${(props) => (props.$btnActive ? "#3380fc" : "grey")};
+  pointer-events: ${(props) => (props.$btnActive ? "auto" : "none")};
+  color: #f5f5f5;
+  position: relative;
+  font-weight: 600;
+  transform-origin: center;
+  font-size: 1em;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+  border: 2px solid #333333;
+  border-radius: 0.3em;
+  box-shadow: 0 0.4em 0 0 #333333;
+  width: 100%;
+  height: 3.5em;
 `;
