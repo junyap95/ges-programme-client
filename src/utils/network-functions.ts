@@ -1,4 +1,25 @@
-import { API_URL } from "./constants";
+import { API_URL, IMAGEKIT_URL_PREFIX } from "./API-URL-constants";
+
+export const login = async (userid: string) => {
+  try {
+    const params = { userid: userid };
+    const response = await fetch(`${API_URL}/authdb/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    });
+
+    if (response.ok) {
+      return await response.json();
+    } else {
+      return { operation: false };
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
 export const fetchUserProgress = async (userid: any) => {
   try {
@@ -18,11 +39,13 @@ export const fetchUserProgress = async (userid: any) => {
   }
 };
 
-export const fetchUserProfile = async (userid: any) => {
+// Mongo
+export const fetchUserProfile = async (userid: string) => {
   try {
-    const response = await fetch(`${API_URL}/get/select-user?userid=${userid}`);
+    const response = await fetch(`${API_URL}/user/find?userid=${userid}`);
     if (response.ok) {
-      return await response.json();
+      const [parsedData] = await response.json();
+      return parsedData;
     }
   } catch (error) {
     console.error("Error:", error);
@@ -132,33 +155,9 @@ export const incrementUserStars = async (userid: string, amount: number) => {
   }
 };
 
-export const login = async (userid: string) => {
-  try {
-    const params = { userid: userid };
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(params),
-    });
-
-    if (response.ok) {
-      return await response.json();
-    } else {
-      return { operation: false };
-    }
-  } catch (error) {
-    console.error("Login Error:", error);
-    return { operation: false };
-  }
-};
-
 export function transformImageUrl(url: string, transformationString: string) {
-  // Check if the URL contains 'imagekit.io'
-  const imageKitMarker = "imagekit.io/jbyap95/";
   // Find the position where the transformation should be inserted
-  const position = url.indexOf(imageKitMarker) + imageKitMarker.length;
+  const position = url.indexOf(IMAGEKIT_URL_PREFIX) + IMAGEKIT_URL_PREFIX.length;
   // Insert the transformation string at the correct position in the URL
   const transformedUrl = url.slice(0, position) + transformationString + "/" + url.slice(position);
   return transformedUrl;

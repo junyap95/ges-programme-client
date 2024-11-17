@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import Map from "./Map";
 import AvatarPopup from "../Components/AvatarPopUp";
-import { fetchGameData } from "../utils/helperFunctions";
+import { fetchGameData } from "../utils/network-functions";
 import { AuthContext } from "../Context/AuthContext";
 import { LogOut } from "lucide-react";
 import LogoutPopup from "../Components/LogoutPopup";
@@ -12,8 +12,7 @@ import NavBar from "../Components/NavBar";
 import FooterBar from "../Components/FooterBar";
 import { LogoutIcon } from "../StyledComponents/styledForNavAndFooter";
 import { GameContainer } from "../StyledComponents/styledForHome";
-
-export type MapTopic = "Numeracy" | "Literacy";
+import { MapTopic, Topic } from "../utils/type-constants";
 
 export default function Home() {
   const context = useContext(AuthContext);
@@ -23,7 +22,6 @@ export default function Home() {
   const [gameData, setGameData] = useState({});
   const [loading, setLoading] = useState(true);
   const isLoggedin = localStorage.getItem("isSignedIn");
-  const [currTopic, setCurrTopic] = useState<MapTopic>("Numeracy");
 
   const handleAvatarPopup = useCallback(() => {
     setAvatarPopup(!avatarPopup);
@@ -49,7 +47,6 @@ export default function Home() {
         const currentTopic = context?.userProfile.course[0] as MapTopic;
         const data = await fetchGameData();
         setGameData(data);
-        setCurrTopic(currentTopic);
         localStorage.setItem("gameData", JSON.stringify(data));
         localStorage.setItem("currTopic", currentTopic);
       } catch (err) {
@@ -61,7 +58,7 @@ export default function Home() {
       }
     };
     fetchData();
-  }, [context?.userProfile.course]);
+  }, [context, context?.userProfile.course]);
 
   if (loading) return <LoadingFullPageAnimation />;
 
@@ -80,10 +77,10 @@ export default function Home() {
   }
 
   return (
-    <GameContainer $currTopic={currTopic}>
+    <GameContainer $currTopic={context?.currTopic}>
       <NavBar handleAvatarPopup={handleAvatarPopup} handleRecordsPopup={handleRecordsPopup} />
-      <Map gameData={gameData} currTopic={currTopic} setCurrTopic={setCurrTopic} />
-      <FooterBar currTopic={currTopic} handleLogoutPopup={handleLogoutPopup} />
+      <Map gameData={gameData} />
+      <FooterBar handleLogoutPopup={handleLogoutPopup} />
       {avatarPopup && <AvatarPopup title="Pick An Avatar" clickHandler={handleAvatarPopup} />}
       {logoutPopup && <LogoutPopup handleLogoutPopup={handleLogoutPopup} />}
       {recordsPopup && <RecordsPopup handleRecordsPopup={handleRecordsPopup} />}

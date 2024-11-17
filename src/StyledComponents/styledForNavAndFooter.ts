@@ -79,7 +79,7 @@ export const TopicTag = styled.button`
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(5px);
-  border: 0px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 0.5rem;
   border-radius: 1em;
   cursor: pointer;

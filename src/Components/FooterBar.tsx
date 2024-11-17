@@ -3,13 +3,7 @@ import { LogOut } from "lucide-react";
 import { AuthContext } from "../Context/AuthContext";
 import { Footer, LogoutIcon, TopicTag } from "../StyledComponents/styledForNavAndFooter";
 
-export default function FooterBar({
-  currTopic,
-  handleLogoutPopup,
-}: {
-  currTopic: string;
-  handleLogoutPopup: () => void;
-}) {
+export default function FooterBar({ handleLogoutPopup }: { handleLogoutPopup: () => void }) {
   const context = useContext(AuthContext);
 
   return (
@@ -24,7 +18,7 @@ export default function FooterBar({
         }}
       >
         {context?.userProfile.username || "Username"}{" "}
-        <TopicTag>{currTopic?.toUpperCase()}</TopicTag>
+        <TopicTag>{context?.currTopic?.toUpperCase()}</TopicTag>
       </div>
 
       <LogoutIcon onClick={handleLogoutPopup}>

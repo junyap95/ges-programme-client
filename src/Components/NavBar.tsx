@@ -1,9 +1,10 @@
 import { Trophy } from "lucide-react";
 import { AvatarImage } from "../StyledComponents/styledComponents";
-import { transformImageUrl } from "../utils/helperFunctions";
+import { transformImageUrl } from "../utils/network-functions";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import { AvatarContainer, Nav, NavElement } from "../StyledComponents/styledForNavAndFooter";
+import { GES_STUDYSEED_LOGO_SMALL, SEED_ICON } from "../utils/image-constants";
 
 export default function NavBar({
   handleAvatarPopup,
@@ -18,7 +19,7 @@ export default function NavBar({
     <Nav>
       <div style={{ height: "150%" }}>
         <img
-          src="https://ik.imagekit.io/jbyap95/studyseed-logo-blue-shadow.png"
+          src={GES_STUDYSEED_LOGO_SMALL}
           alt="studyseed-logo"
           style={{
             filter: " drop-shadow(0 0.1em 0 rgba(43, 73, 109, 1)) ",
@@ -38,7 +39,7 @@ export default function NavBar({
           <AvatarImage
             src={
               transformImageUrl(context?.userProfile.avatar as string, "tr:h-200,fo-face:r-max") ||
-              "https://ik.imagekit.io/jbyap95/favicon3.png"
+              SEED_ICON
             }
             alt="user-avatar"
           />

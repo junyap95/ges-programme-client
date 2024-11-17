@@ -1,9 +1,3 @@
-/* .test {
-  display: flex !important;
-  justify-content: center !important;
-  width: 100% !important;
-} */
-
 .pop-container {
   position: absolute;
   display: flex;
@@ -26,6 +20,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
+  gap: 0.25em;
   align-items: center;
   justify-content: space-around;
   border-radius: 1em;

@@ -1,6 +1,7 @@
 import { startCase } from "lodash";
 import { MarkerWrapper } from "../StyledComponents/styledComponents";
 import { useEffect, useState } from "react";
+import { isWithinOneWeek } from "../utils/helper-functions";
 
 type MarkerProps = {
   activeDate: string;
@@ -8,17 +9,6 @@ type MarkerProps = {
   tileData: { week: string; x: number; y: number; loc: string };
   clickHandler: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
-
-function isWithinOneWeek(startDateStr: Date) {
-  // Parse the dates
-  const today = new Date();
-  // Calculate the end date (one week after the start date)
-  const endDate = new Date(startDateStr);
-  endDate.setDate(startDateStr.getDate() + 6); // Add 7 days to the start date
-
-  // Check if the check date is within the range
-  return today >= startDateStr && today <= endDate;
-}
 
 export default function Marker({ activeDate, coordinate, tileData, clickHandler }: MarkerProps) {
   // TODO: Construction Complete state
@@ -34,6 +24,7 @@ export default function Marker({ activeDate, coordinate, tileData, clickHandler 
   }, []);
 
   const currentWeek = startCase(tileData.week).toUpperCase();
+
   return (
     <MarkerWrapper
       title={tileData.loc}

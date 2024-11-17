@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import Marker from "../Components/Marker";
 import PopupCard from "../Components/PopupCard";
-import { tiles } from "../utils/constants";
+import { tiles } from "../utils/tiles-coordinate";
 import { ChevronRight } from "lucide-react";
-import { MapTopic } from "./Home";
 import { AuthContext } from "../Context/AuthContext";
 import {
   ChangeMapArrow,
@@ -11,6 +10,9 @@ import {
   GameMapContainer,
   GameMapSubwrapper,
 } from "../StyledComponents/styledForMap";
+import { MapTopic, Topic } from "../utils/type-constants";
+import { LITERACY_MAP, NUMERACY_MAP } from "../utils/image-constants";
+import { useDelay } from "../hooks/useDelay";
 
 type GameData = {
   [key: string]: {
@@ -23,11 +25,9 @@ type GameData = {
 
 type MapProps = {
   gameData: GameData;
-  currTopic: MapTopic;
-  setCurrTopic: React.Dispatch<React.SetStateAction<MapTopic>>;
 };
 
-export default function Map({ gameData, currTopic, setCurrTopic }: MapProps) {
+export default function Map({ gameData }: MapProps) {
   const context = useContext(AuthContext);
   const numberOfCourses = context?.userProfile.course.length as number;
   const mapRef = useRef<HTMLImageElement>(null);
@@ -37,8 +37,7 @@ export default function Map({ gameData, currTopic, setCurrTopic }: MapProps) {
   const [locAndWeek, setLocAndWeek] = useState({ loc: "", week: "" });
   const [isFlat, setIsFlat] = useState(false);
   const [animationDone, setAnimationDone] = useState(false);
-
-  console.log({ height, width });
+  const { elementLoading } = useDelay();
 
   const resizeHandler = () => {
     if (mapRef.current) {
@@ -48,11 +47,17 @@ export default function Map({ gameData, currTopic, setCurrTopic }: MapProps) {
     }
   };
 
-  const handleChangeMap = () => {
-    const { currTopic } = localStorage;
-    setCurrTopic((prevTopic) => (prevTopic === "Numeracy" ? "Literacy" : "Numeracy"));
-    localStorage.setItem("currTopic", currTopic === "Numeracy" ? "Literacy" : "Numeracy");
-  };
+  const handleChangeMap = useCallback(() => {
+    const currentTopic = context?.currTopic;
+    console.log("topic in handler", currentTopic);
+    context?.setCurrTopic((prevTopic) =>
+      prevTopic === Topic.NUMERACY ? Topic.LITERACY : Topic.NUMERACY
+    );
+    localStorage.setItem(
+      "currTopic",
+      currentTopic === Topic.NUMERACY ? Topic.LITERACY : Topic.NUMERACY
+    );
+  }, [context]);
 
   useEffect(() => {
     // resizeHandler();
@@ -92,11 +97,7 @@ export default function Map({ gameData, currTopic, setCurrTopic }: MapProps) {
         <GameMapSubwrapper style={{ transform: isFlat ? "rotateX(0deg)" : "rotateX(40deg)" }}>
           <GameMap
             ref={mapRef}
-            src={
-              currTopic === "Numeracy"
-                ? "https://ik.imagekit.io/jbyap95/pixel-map-no-bg.png"
-                : "https://ik.imagekit.io/jbyap95/Map_no%20shadow.png?updatedAt=1729330471856"
-            }
+            src={context?.currTopic === Topic.NUMERACY ? NUMERACY_MAP : LITERACY_MAP}
             alt="lisburn-map"
           />
 
@@ -115,8 +116,14 @@ export default function Map({ gameData, currTopic, setCurrTopic }: MapProps) {
             ))}
         </GameMapSubwrapper>
       </GameMapContainer>
-      {popup && <PopupCard locAndWeekData={locAndWeek} onClose={() => setPopup(false)} />}
-      {numberOfCourses > 1 && (
+      {popup && (
+        <PopupCard
+          locAndWeekData={locAndWeek}
+          onClose={() => setPopup(false)}
+          topic={context?.currTopic as MapTopic}
+        />
+      )}
+      {numberOfCourses > 1 && !elementLoading && (
         <ChangeMapArrow onClick={handleChangeMap}>
           <ChevronRight />
         </ChangeMapArrow>

@@ -6,19 +6,20 @@ import { ChevronLeft } from "lucide-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRef, useState } from "react";
+import { SAM_OCCUPATION1, SAM_OCCUPATION2, SAM_OCCUPATION3 } from "../utils/image-constants";
 
 const avatars = [
   {
     samName: "Architect",
-    url: "https://ik.imagekit.io/jbyap95/tr:w-200/sam_period.png?updatedAt=1729092923546",
+    url: SAM_OCCUPATION1,
   },
   {
     samName: "Astronaut",
-    url: "https://ik.imagekit.io/jbyap95/tr:w-200/sam_colon.png",
+    url: SAM_OCCUPATION2,
   },
   {
     samName: "Teacher",
-    url: "https://ik.imagekit.io/jbyap95/tr:w-200/sam_semicolon.png?updatedAt=1729092923733",
+    url: SAM_OCCUPATION3,
   },
 ];
 

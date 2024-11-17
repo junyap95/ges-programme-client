@@ -4,7 +4,6 @@ import Login from "./Page/Login";
 import "./App.css";
 import { AuthProvider } from "./Context/AuthContext";
 import MapContainer from "./Page/Home";
-import TesterMap from "./Page/TesterMap";
 import "react-loading-skeleton/dist/skeleton.css";
 import MobileDeviceError from "./Page/MobileDeviceError";
 
@@ -19,7 +18,6 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/game-map" element={<MapContainer />} />
-        <Route path="/test-map" element={<TesterMap />} />
       </Routes>
     </AuthProvider>
   );

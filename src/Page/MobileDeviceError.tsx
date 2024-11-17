@@ -1,10 +1,11 @@
 import styled from "styled-components";
+import { GES_STUDYSEED_LOGO, SAM_CONSTRUCTION } from "../utils/image-constants";
 
 export default function MobileDeviceError() {
   return (
     <Error>
       <img
-        src="https://ik.imagekit.io/jbyap95/gamified%20learning%20programme.png?updatedAt=1730298460178"
+        src={GES_STUDYSEED_LOGO}
         alt="studyseed-logo"
         style={{
           width: "15rem",
@@ -23,7 +24,7 @@ export default function MobileDeviceError() {
       </div>
 
       <img
-        src="https://ik.imagekit.io/jbyap95/sam_constructor01_shadow.png?updatedAt=1730139103345"
+        src={SAM_CONSTRUCTION}
         alt="studyseed-sam"
         style={{
           width: "30%",

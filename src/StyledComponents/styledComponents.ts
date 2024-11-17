@@ -40,7 +40,6 @@ export const MarkerWrapper = styled.button`
     animation: ${pulse} 3s infinite;
     transition: all 0.2s ease;
     /* transform: translate(-50%, -50%); */
-
     /* transform-origin: center; */
   }
 `;
@@ -102,12 +101,6 @@ export const Header2 = styled.h2`
   text-align: center;
   font-size: 1.5rem;
 `;
-
-// export const MapWrapper = styled.div`
-//   height: 100%;
-//   width: 100%;
-//   z-index: 4;
-// `;
 
 export const AvatarImage = styled.img`
   height: 120%;
