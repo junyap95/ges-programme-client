@@ -26,15 +26,12 @@ const App: React.FC = () => {
 export default App;
 
 function useMediaQuery(query: string) {
-  console.log("useMediaQuery");
   const [matches, setMatches] = useState(false);
 
   useEffect(() => {
-    console.log("useffect");
     const matchQueryList = window.matchMedia(query);
     setMatches(matchQueryList.matches);
     function handleChange(e: any) {
-      console.log(e);
       setMatches(e.matches);
     }
     matchQueryList.addEventListener("change", handleChange);

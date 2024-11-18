@@ -16,10 +16,7 @@ import { useDelay } from "../hooks/useDelay";
 
 type GameData = {
   [key: string]: {
-    [key: string]: {
-      activeDate: string;
-      allQuestions: {};
-    };
+    [key: string]: string;
   };
 };
 
@@ -49,7 +46,6 @@ export default function Map({ gameData }: MapProps) {
 
   const handleChangeMap = useCallback(() => {
     const currentTopic = context?.currTopic;
-    console.log("topic in handler", currentTopic);
     context?.setCurrTopic((prevTopic) =>
       prevTopic === Topic.NUMERACY ? Topic.LITERACY : Topic.NUMERACY
     );
@@ -104,7 +100,7 @@ export default function Map({ gameData }: MapProps) {
           {animationDone &&
             tiles.map((tile, index) => (
               <Marker
-                activeDate={gameData.num[tile.week].activeDate}
+                activeDate={gameData[tile.week].activeDate}
                 coordinate={{
                   x: width / 2 + (width / 50) * tile.x,
                   y: height / 2 + (height / 50) * tile.y,

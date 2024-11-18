@@ -18,7 +18,28 @@ interface AuthContextProps {
   userProfile: UserProfile;
   currTopic: MapTopic;
   setCurrTopic: Dispatch<SetStateAction<MapTopic>>;
+  setUserProfile: Dispatch<SetStateAction<UserProfile>>;
+  // updateUserProfile: (userid: string) => void;
 }
+
+export const fetcher = (userid: string, setUserProfile: Dispatch<SetStateAction<UserProfile>>) => {
+  fetchUserProfile(userid).then((data) => {
+    const fetchedUserProfile = {
+      username: `${data.first_name} ${data.last_name}`,
+      avatar: data.avatar,
+      course: data.courses,
+      attempts: data.attempts,
+      progress: data.progress,
+      scores: data.scores,
+    };
+
+    if (data) {
+      setUserProfile(fetchedUserProfile);
+      localStorage.setItem("userid", userid);
+      localStorage.setItem("userProfile", JSON.stringify(fetchedUserProfile));
+    }
+  });
+};
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
@@ -44,28 +65,16 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const { userid } = localStorage;
+    const storedIsSignedIn = localStorage.getItem("isSignedIn");
+    if (storedIsSignedIn) fetcher(userid, setUserProfile);
+  }, [currTopic]);
+
   const signInContext = (userid: string) => {
     setIsSignedIn(true);
     localStorage.setItem("isSignedIn", JSON.stringify(true));
-
-    fetchUserProfile(userid).then((data) => {
-      console.log("login data", data);
-
-      const userProfile = {
-        username: `${data.first_name} ${data.last_name}`,
-        avatar: data.avatar,
-        course: data.courses,
-        attempts: data.attempts,
-        progress: data.progress,
-        scores: data.scores,
-      };
-
-      if (data) {
-        setUserProfile(userProfile);
-        localStorage.setItem("userid", userid);
-        localStorage.setItem("userProfile", JSON.stringify(userProfile));
-      }
-    });
+    fetcher(userid, setUserProfile);
   };
 
   const signOut = () => {
@@ -81,9 +90,18 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.clear();
   };
 
+  console.log("context", userProfile);
   return (
     <AuthContext.Provider
-      value={{ isSignedIn, signInContext, signOut, userProfile, currTopic, setCurrTopic }}
+      value={{
+        isSignedIn,
+        signInContext,
+        signOut,
+        userProfile,
+        currTopic,
+        setCurrTopic,
+        setUserProfile,
+      }}
     >
       {children}
     </AuthContext.Provider>

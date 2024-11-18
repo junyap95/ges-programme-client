@@ -91,7 +91,7 @@ export const CloseButton = styled.button`
 export const Header1 = styled.div`
   margin: 0px;
   font-weight: 600;
-  font-size: 1.8em;
+  font-size: 1.5em;
   text-align: center;
 `;
 
@@ -99,7 +99,7 @@ export const Header2 = styled.h2`
   margin: 0px;
   font-weight: lighter;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 `;
 
 export const AvatarImage = styled.img`

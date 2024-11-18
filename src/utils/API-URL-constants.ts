@@ -3,7 +3,7 @@ const baseUrl = `${window.location.protocol}//${window.location.hostname}:`;
 export const QUIZ_SELECTION_API_URL =
   process.env.NODE_ENV === "production"
     ? process.env.REACT_APP_QUIZ_SELECTION
-    : `${baseUrl}3002/ges-topic-selection`;
+    : `${baseUrl}3002/ges/topic-selection`;
 
 export const API_URL =
   process.env.NODE_ENV === "production"

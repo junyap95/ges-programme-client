@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import Map from "./Map";
 import AvatarPopup from "../Components/AvatarPopUp";
-import { fetchGameData } from "../utils/network-functions";
+import { fetchActiveDates } from "../utils/network-functions";
 import { AuthContext } from "../Context/AuthContext";
 import { LogOut } from "lucide-react";
 import LogoutPopup from "../Components/LogoutPopup";
@@ -12,7 +12,7 @@ import NavBar from "../Components/NavBar";
 import FooterBar from "../Components/FooterBar";
 import { LogoutIcon } from "../StyledComponents/styledForNavAndFooter";
 import { GameContainer } from "../StyledComponents/styledForHome";
-import { MapTopic, Topic } from "../utils/type-constants";
+import { MapTopic } from "../utils/type-constants";
 
 export default function Home() {
   const context = useContext(AuthContext);
@@ -45,7 +45,7 @@ export default function Home() {
       try {
         setLoading(true);
         const currentTopic = context?.userProfile.course[0] as MapTopic;
-        const data = await fetchGameData();
+        const data = await fetchActiveDates();
         setGameData(data);
         localStorage.setItem("gameData", JSON.stringify(data));
         localStorage.setItem("currTopic", currentTopic);

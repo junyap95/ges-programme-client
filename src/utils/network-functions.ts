@@ -39,22 +39,9 @@ export const fetchUserProgress = async (userid: any) => {
   }
 };
 
-// Mongo
-export const fetchUserProfile = async (userid: string) => {
+export const fetchActiveDates = async () => {
   try {
-    const response = await fetch(`${API_URL}/user/find?userid=${userid}`);
-    if (response.ok) {
-      const [parsedData] = await response.json();
-      return parsedData;
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
-
-export const fetchGameData = async () => {
-  try {
-    const response = await fetch(`${API_URL}/get/game-data`, {
+    const response = await fetch(`${API_URL}/mdb/week-dates`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -162,3 +149,25 @@ export function transformImageUrl(url: string, transformationString: string) {
   const transformedUrl = url.slice(0, position) + transformationString + "/" + url.slice(position);
   return transformedUrl;
 }
+
+// Mongo
+export const fetchUserProfile = async (userid: string) => {
+  try {
+    const response = await fetch(`${API_URL}/mdb/find?userid=${userid}`);
+    if (response.ok) {
+      const [parsedData] = await response.json();
+      return parsedData;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+export const getUserProgress = async (userid: string) => {
+  try {
+    const response = await fetch(`${API_URL}/mdb/user-progress?userid=${userid}`);
+    if (response.ok) return await response.json();
+  } catch (error) {
+    console.error("Error fetching user progress from MDB: ", error);
+  }
+};

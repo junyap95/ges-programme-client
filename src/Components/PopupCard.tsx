@@ -24,7 +24,7 @@ export default function PopupCard({ topic, locAndWeekData, onClose }: PopupCardP
     course: "",
   });
   const [loading, setLoading] = useState(true);
-  const { currTopic } = localStorage;
+  const currTopic = context?.currTopic;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +37,7 @@ export default function PopupCard({ topic, locAndWeekData, onClose }: PopupCardP
         setUserGameData({
           attempts: attempts[topic][locAndWeekData.week],
           progress: isLevelCompleted,
-          course: currTopic,
+          course: currTopic as string,
         });
       } catch (err) {
         console.error("Error fetching game progress in PopupCard:", err);
@@ -73,6 +73,7 @@ export default function PopupCard({ topic, locAndWeekData, onClose }: PopupCardP
     const userDataParams = encodeURIComponent(JSON.stringify(userData));
     window.location.href = `${QUIZ_SELECTION_API_URL}?week=${locAndWeekData.week}&data=${userDataParams}`;
   }, [currTopic, locAndWeekData.week, userGameData.attempts, userProfile, userid]);
+  console.log(locAndWeekData.week, currTopic);
 
   return (
     <div className="pop-container">
