@@ -1,3 +1,5 @@
+import { SAM_LOADING } from "../utils/image-constants";
+
 export default function LoadingFullPageAnimation() {
   return (
     <div className="login-container">
@@ -11,7 +13,7 @@ export default function LoadingFullPageAnimation() {
       >
         <img
           className="sam-loading"
-          src="https://ik.imagekit.io/jbyap95/sam_anim03.gif?updatedAt=1729092923412"
+          src={SAM_LOADING}
           alt="studyseed-sam"
           style={{
             width: "20%",

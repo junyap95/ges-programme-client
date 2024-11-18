@@ -1,9 +1,5 @@
 import { TypeAnimation } from "react-type-animation";
 
-// interface ExampleComponentProps {
-//   fn: () => void;
-// }
-
 const IntroAutoType = () => {
   return (
     <TypeAnimation
@@ -26,7 +22,6 @@ const IntroAutoType = () => {
         // },
       ]}
       wrapper="div"
-      className="sc-gtLWhw cfMAra"
       speed={60}
       cursor={false}
       style={{

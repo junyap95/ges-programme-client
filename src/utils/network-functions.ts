@@ -1,4 +1,25 @@
-import { API_URL } from "./constants";
+import { API_URL, IMAGEKIT_URL_PREFIX } from "./API-URL-constants";
+
+export const login = async (userid: string) => {
+  try {
+    const params = { userid: userid };
+    const response = await fetch(`${API_URL}/authdb/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    });
+
+    if (response.ok) {
+      return await response.json();
+    } else {
+      return { operation: false };
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
 export const fetchUserProgress = async (userid: any) => {
   try {
@@ -18,20 +39,9 @@ export const fetchUserProgress = async (userid: any) => {
   }
 };
 
-export const fetchUserProfile = async (userid: any) => {
+export const fetchActiveDates = async () => {
   try {
-    const response = await fetch(`${API_URL}/get/select-user?userid=${userid}`);
-    if (response.ok) {
-      return await response.json();
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
-
-export const fetchGameData = async () => {
-  try {
-    const response = await fetch(`${API_URL}/get/game-data`, {
+    const response = await fetch(`${API_URL}/mdb/week-dates`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -129,5 +139,35 @@ export const incrementUserStars = async (userid: string, amount: number) => {
     if (response.ok) return await response.json();
   } catch (error) {
     console.error("Error incrementing user stars:", error);
+  }
+};
+
+export function transformImageUrl(url: string, transformationString: string) {
+  // Find the position where the transformation should be inserted
+  const position = url.indexOf(IMAGEKIT_URL_PREFIX) + IMAGEKIT_URL_PREFIX.length;
+  // Insert the transformation string at the correct position in the URL
+  const transformedUrl = url.slice(0, position) + transformationString + "/" + url.slice(position);
+  return transformedUrl;
+}
+
+// Mongo
+export const fetchUserProfile = async (userid: string) => {
+  try {
+    const response = await fetch(`${API_URL}/mdb/find?userid=${userid}`);
+    if (response.ok) {
+      const [parsedData] = await response.json();
+      return parsedData;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+export const getUserProgress = async (userid: string) => {
+  try {
+    const response = await fetch(`${API_URL}/mdb/user-progress?userid=${userid}`);
+    if (response.ok) return await response.json();
+  } catch (error) {
+    console.error("Error fetching user progress from MDB: ", error);
   }
 };
