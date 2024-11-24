@@ -2,6 +2,7 @@ import { startCase } from "lodash";
 import { MarkerWrapper } from "../StyledComponents/styledComponents";
 import { useEffect, useState } from "react";
 import { isWithinOneWeek } from "../utils/helper-functions";
+import { useMediaQuery } from "../hooks/useMedia";
 
 type MarkerProps = {
   activeDate: string;
@@ -16,6 +17,11 @@ export default function Marker({ activeDate, coordinate, tileData, clickHandler 
   const today = new Date();
   const isActive = today >= activeDateObj;
   const isWithinOneWeekRange = isWithinOneWeek(activeDateObj);
+  const isLandscape = useMediaQuery("(orientation: landscape)");
+  const lanscapeActiveFontSize = "clamp(0.5em, 2vh, 0.8em)";
+  const portraitActiveFontSize = "clamp(0.5em, 1vh, 1em)";
+  const lanscapeInActiveFontSize = "clamp(0.3em, 2vh, 0.6em)";
+  const portraitInActiveFontSize = "clamp(0.1em, 0.75vh, 0.5em)";
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -37,7 +43,13 @@ export default function Marker({ activeDate, coordinate, tileData, clickHandler 
         zIndex: 1,
         backgroundColor: isActive ? "#3380fc" : "grey",
         pointerEvents: isActive ? "auto" : "none",
-        fontSize: isActive ? "0.75em" : "0.5em",
+        fontSize: isActive
+          ? isLandscape
+            ? lanscapeActiveFontSize
+            : portraitActiveFontSize
+          : isLandscape
+          ? lanscapeInActiveFontSize
+          : portraitInActiveFontSize,
         scale: isVisible ? "1" : "0",
       }}
       onClick={clickHandler}
