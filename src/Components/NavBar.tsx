@@ -17,7 +17,7 @@ export default function NavBar({
 
   return (
     <Nav>
-      <div style={{ height: "150%" }}>
+      <div style={{ height: "100%" }}>
         <img
           src={GES_STUDYSEED_LOGO_SMALL}
           alt="studyseed-logo"
