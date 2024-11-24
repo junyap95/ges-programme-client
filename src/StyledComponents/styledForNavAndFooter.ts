@@ -5,11 +5,11 @@ export const Nav = styled.nav`
   top: 0;
   display: flex;
   justify-content: space-between;
-  padding: 1em;
+  padding: 0 1em;
   color: #333333;
   align-items: center;
   width: 100%;
-  height: 5rem;
+  height: clamp(2rem, 12vh, 5rem);
   border: 0px solid red;
   z-index: 3;
 `;
@@ -23,8 +23,8 @@ export const NavElement = styled.div`
 `;
 
 export const AvatarContainer = styled.div`
-  height: 3em;
-  width: 3em;
+  height: clamp(1em, 8vh, 3em);
+  width: clamp(1em, 8vh, 3em);
   border: 2px solid #333333;
   border-radius: 3em;
   cursor: pointer;
@@ -60,7 +60,9 @@ export const LogoutIcon = styled.button`
   align-items: center;
   justify-content: center;
   background-color: #f5394c;
-  padding: 0.5rem;
+  height: clamp(1em, 8vh, 3em);
+  width: clamp(1em, 8vh, 3em);
+  /* padding: 0.5rem; */
   border: 2px solid #333333;
   border-radius: 3em;
   box-shadow: 0px 6px 0px 0px #333333;

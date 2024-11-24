@@ -22,12 +22,12 @@ export const GameMapSubwrapper = styled.div`
   border-radius: 2em;
   transition: all 1s ease-in-out;
 
-  @media (max-width: 1025px) {
+  @media (orientation: portrait) {
     height: fit-content;
     width: 90%;
   }
   /* anything above 1024px, the map will be 100% height */
-  @media (min-width: 1024px) {
+  @media (orientation: landscape) {
     height: 90%;
     width: fit-content;
   }
@@ -39,12 +39,12 @@ export const GameMap = styled.img`
   object-fit: contain;
   filter: drop-shadow(0 0.7em 0 rgba(0, 0, 0, 0.1));
 
-  @media (max-width: 1025px) {
+  @media (orientation: portrait) {
     height: auto;
     width: 100%;
   }
 
-  @media (min-width: 1024px) {
+  @media (orientation: landscape) {
     height: 100%;
   }
 `;
