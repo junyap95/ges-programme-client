@@ -25,7 +25,7 @@ const avatars = [
 
 const settings = {
   centerPadding: "10px",
-  autoplay: true,
+  autoplay: false,
   dots: true,
   infinite: true,
   speed: 500,

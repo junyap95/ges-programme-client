@@ -24,9 +24,10 @@
   align-items: center;
   justify-content: space-around;
   border-radius: 1em;
+  /* width: clamp(15rem, 40vw, 20rem); */
   width: 20rem;
-  max-height: fit-content;
-  min-height: 30rem;
+  /* max-height: fit-content; */
+  max-height: clamp(15rem, 70vh, 30rem);
   padding: 1em 0;
   background-color: rgba(255, 255, 255, 0.75);
   margin: auto;
@@ -76,40 +77,13 @@
   opacity: 1;
 }
 
-.login-container {
-  background: radial-gradient(circle, rgba(229, 229, 229, 1) 0%, rgba(103, 143, 201, 1) 70%);
-  height: 100svh;
-  position: relative;
-}
-
-.login-subwrapper {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #000;
-  height: 100svh;
-  width: 50svw;
-  margin: auto;
-  inset: 0;
-  gap: 1em;
-
-  background-color: rgba(229, 229, 229, 0.3);
-  /* border-radius: 1rem; */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.sam-right {
+/* .sam-right {
   animation: slideInFromRight 750ms ease-in-out;
 }
 
 .sam-left {
   animation: slideInFromLeft 750ms ease-in-out;
-}
+} */
 
 .studyseed-logo {
   animation: slideInFromTop 750ms ease-in-out;

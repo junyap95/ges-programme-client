@@ -1,10 +1,11 @@
+import { LoaderCircle } from "lucide-react";
 import {
   ErrorMsg,
   FillInputs,
   LoginBtn,
   LoginFormWrapper,
-} from "../StyledComponents/styledComponents";
-import { LoaderCircle } from "lucide-react";
+} from "../StyledComponents/styledForLogin";
+import { SAM_COMPLETION, SAM_CONSTRUCTION } from "../utils/image-constants";
 
 interface LoginFormProps {
   userid: string;
@@ -26,33 +27,50 @@ export default function LoginForm({
   handleLogin,
 }: LoginFormProps) {
   return (
-    <LoginFormWrapper className="login-form" $isLoading={gameMapLoading}>
-      <form
-        onSubmit={handleLogin}
+    <LoginFormWrapper onSubmit={handleLogin} className="login-form" $isLoading={gameMapLoading}>
+      <img
+        className="sam-left"
+        src={SAM_COMPLETION}
+        alt="studyseed sam"
         style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "2em",
-          alignItems: "center",
-          justifyContent: "center",
+          width: "80%",
+          position: "absolute",
+          right: "90%",
+          bottom: "-30%",
+          pointerEvents: "none",
+          userSelect: "none",
         }}
-      >
-        <FillInputs
-          placeholder="Enter Your Userid"
-          type="text"
-          id="userid"
-          value={userid}
-          onChange={handleChange}
-          required
-          maxLength={10}
-          autoComplete="off"
-        />
+      />
 
-        <LoginBtn type="submit" $btnActive={btnActive}>
-          {authLoading ? <LoaderCircle color="#e5e5e5" className="login-spinner" /> : "I'M GAME!"}
-          {loginError && <ErrorMsg>Invalid User ID</ErrorMsg>}
-        </LoginBtn>
-      </form>
+      <img
+        className="sam-right"
+        src={SAM_CONSTRUCTION}
+        alt="studyseed sam"
+        style={{
+          width: "80%",
+          position: "absolute",
+          left: "90%",
+          bottom: "-30%",
+          pointerEvents: "none",
+          userSelect: "none",
+        }}
+      />
+
+      <FillInputs
+        placeholder="Enter Your Userid"
+        type="text"
+        id="userid"
+        value={userid}
+        onChange={handleChange}
+        required
+        maxLength={10}
+        autoComplete="off"
+      />
+
+      <LoginBtn type="submit" $btnActive={btnActive}>
+        {authLoading ? <LoaderCircle color="#e5e5e5" className="login-spinner" /> : "I'M GAME!"}
+        {loginError && <ErrorMsg>Invalid User ID</ErrorMsg>}
+      </LoginBtn>
     </LoginFormWrapper>
   );
 }

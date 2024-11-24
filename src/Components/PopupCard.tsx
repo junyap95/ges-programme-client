@@ -73,7 +73,6 @@ export default function PopupCard({ topic, locAndWeekData, onClose }: PopupCardP
     const userDataParams = encodeURIComponent(JSON.stringify(userData));
     window.location.href = `${QUIZ_SELECTION_API_URL}?week=${locAndWeekData.week}&data=${userDataParams}`;
   }, [currTopic, locAndWeekData.week, userGameData.attempts, userProfile, userid]);
-  console.log(locAndWeekData.week, currTopic);
 
   return (
     <div className="pop-container">
@@ -87,7 +86,7 @@ export default function PopupCard({ topic, locAndWeekData, onClose }: PopupCardP
               src={userGameData.progress ? SAM_COMPLETION : SAM_CONSTRUCTION}
               alt="sam-logo"
               width={"100%"}
-              style={{ pointerEvents: "none" }}
+              style={{ pointerEvents: "none", width: "clamp(50%, 35vh, 100%)" }}
             />
             <div style={{ textAlign: "center", width: "inherit", padding: "0 1em" }}>
               {userGameData.progress ? (

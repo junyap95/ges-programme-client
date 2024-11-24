@@ -90,7 +90,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.clear();
   };
 
-  console.log("context", userProfile);
   return (
     <AuthContext.Provider
       value={{
