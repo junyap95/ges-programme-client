@@ -77,13 +77,13 @@
   opacity: 1;
 }
 
-.sam-right {
+/* .sam-right {
   animation: slideInFromRight 750ms ease-in-out;
 }
 
 .sam-left {
   animation: slideInFromLeft 750ms ease-in-out;
-}
+} */
 
 .studyseed-logo {
   animation: slideInFromTop 750ms ease-in-out;

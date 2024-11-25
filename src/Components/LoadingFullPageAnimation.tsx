@@ -1,8 +1,9 @@
+import { LoginWrapper } from "../StyledComponents/styledForLogin";
 import { SAM_LOADING } from "../utils/image-constants";
 
 export default function LoadingFullPageAnimation() {
   return (
-    <div className="login-container">
+    <LoginWrapper>
       <div
         style={{
           position: "absolute",
@@ -23,6 +24,6 @@ export default function LoadingFullPageAnimation() {
           }}
         />
       </div>
-    </div>
+    </LoginWrapper>
   );
 }

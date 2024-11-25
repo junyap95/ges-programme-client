@@ -39,8 +39,6 @@ export default function LoginForm({
           bottom: "-30%",
           pointerEvents: "none",
           userSelect: "none",
-          transition: "all 1s ease-in-out",
-          transform: gameMapLoading ? "translateX(-200%)" : "translateX(0)",
         }}
       />
 
@@ -55,8 +53,6 @@ export default function LoginForm({
           bottom: "-30%",
           pointerEvents: "none",
           userSelect: "none",
-          transition: "all 1s ease-in-out",
-          transform: gameMapLoading ? "translateX(200%)" : "translateX(0)",
         }}
       />
 
